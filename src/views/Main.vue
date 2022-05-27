@@ -1,0 +1,30 @@
+<template>
+    <el-container style="height: 100%;">
+    <el-aside width="auto">
+      <CommonAside></CommonAside>
+    </el-aside>
+     <el-container>
+      <el-header style="background:rgb(11, 23, 64)">
+        <CommonHeader></CommonHeader>
+      </el-header>
+      <common-tab></common-tab>
+      <el-main  id="con_lf_top_div" style="background:rgb(231, 234, 237);padding:10px">
+        <router-view></router-view>
+        <CommonFooter></CommonFooter>
+      </el-main>
+    </el-container>
+  </el-container>
+</template>
+<script>
+import CommonAside from '../components/common/CommonAside.vue'
+import CommonHeader from '../components/common/CommonHeader.vue'
+import CommonTab from '../components/common/CommonTab.vue'
+import CommonFooter from '../components/common/CommonFooter.vue'
+
+export default {
+  components: { CommonAside, CommonHeader, CommonTab,CommonFooter }
+}
+</script>
+<style lang="">
+
+</style>
