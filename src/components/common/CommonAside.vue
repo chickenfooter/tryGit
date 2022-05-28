@@ -3,20 +3,23 @@
     :default-active="String(activeNav)" :collapse="isCollapse" :unique-opened="true" class="el-menu-vertical-demo">
     <!-- 没有二级菜单的导航栏 -->
     <el-menu-item :index="item.path" v-for="item in noChildren" :key="item.path" @click="clickMenu(item)">
-      <i :class="'el-icon-' + item.icon"></i>
-      <span slot="title">{{ item.label }}</span>
+      <!-- <i :class="'el-icon-' + item.icon"></i> -->
+      <img style="width:20px;height:20px" :src="item.icon">
+      <span slot="title" style="font-size:15px;margin-left:5px">{{ item.label }}</span>
     </el-menu-item>
     <!-- 有二级的导航栏 -->
     <el-submenu :index="item.path" v-for="(item, index) in hasChildren" :key="index">
       <template slot="title">
-        <i :class="'el-icon-' + item.icon"></i>
-        <span>{{ item.label }}</span>
+        <!-- <i :class="'el-icon-' + item.icon"></i> -->
+         <img style="width:20px;height:20px" :src="item.icon">
+        <span style="font-size:15px;margin-left:5px">{{ item.label }}</span>
       </template>
       <el-menu-item-group>
         <el-menu-item :index="subItem.path" v-for="(subItem, subIndex) in item.children" :key="subIndex"
         @click="clickMenu(subItem)" >
-          <i :class="'el-icon-' + subItem.icon"></i>
-          <span slot="title">{{ subItem.label }}</span>
+          <!-- <i :class="'el-icon-' + subItem.icon"></i> -->
+           <img style="width:20px;height:20px" :src="subItem.icon">
+          <span style="font-size:15px;margin-left:5px" slot="title">{{ subItem.label }}</span>
         </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
@@ -36,11 +39,6 @@ export default {
       return this.asideMenu.filter(item => !item.children)
     },
     hasChildren() {
-      var flag = JSON.parse(localStorage.getItem('userForm')).flag
-      // 权限管理，当不是队长时，不显示系统管理菜单
-      if(!flag) {
-        this.asideMenu = this.asideMenu.splice(0,7)
-      }
       return this.asideMenu.filter(item => item.children)
     },
     isCollapse() {

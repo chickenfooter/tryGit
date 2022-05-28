@@ -5,10 +5,10 @@
       <div class="login-text">柑橘病虫害智慧平台</div>
       <el-form :model="loginForm" ref="loginFormRef" :rules="loginFormRules">
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名" @input="change($event)"></el-input>
+          <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名(admin)" @input="change($event)"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" prefix-icon="el-icon-unlock" placeholder="请输入密码" @input="change($event)" type="password" @keyup.enter.native="handleLoginForm()"></el-input>
+          <el-input v-model="loginForm.password" prefix-icon="el-icon-unlock" placeholder="请输入密码(随意)" @input="change($event)" type="password" @keyup.enter.native="handleLoginForm()"></el-input>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" @click="handleLoginForm">登录</el-button>
@@ -55,19 +55,16 @@ export default {
       this.$refs.loginFormRef.validate(async (valid) => {
         // console.log(valid)
         if (!valid) return
-        const { data: res } = await this.$http.post(`/user/login/${this.loginForm.username}/${this.loginForm.password}`)
-        console.log(res)
-        if (res.statusCode == 20000) {
+        if (this.loginForm.username == 'admin') {
           this.$message.success('登录成功！')
-          localStorage.setItem('userForm', JSON.stringify(res.data))
-          window.localStorage.setItem('token', res.data.id)
+          // localStorage.setItem('userForm', JSON.stringify(res.data))
+          window.localStorage.setItem('token', this.loginForm.password)
           this.$router.push('/main')
         } else {
           this.$message.error('密码或账号错误！')
         }
       })
 
-      console.log('登录成功', res)
       // // console.log('123456')
       // this.$refs.loginFormRef.validate(valid => {
       //   // console.log(valid)

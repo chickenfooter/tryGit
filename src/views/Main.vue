@@ -1,14 +1,14 @@
 <template>
-    <el-container style="height: 100%;">
+  <el-container style="height: 100%">
     <el-aside width="auto">
       <CommonAside></CommonAside>
     </el-aside>
-     <el-container>
-      <el-header style="background:rgb(11, 23, 64)">
+    <el-container>
+      <el-header style="background: rgb(11, 23, 64)">
         <CommonHeader></CommonHeader>
       </el-header>
       <common-tab></common-tab>
-      <el-main  id="con_lf_top_div" style="background:rgb(231, 234, 237);padding:10px">
+      <el-main id="con_lf_top_div" class="body-main">
         <router-view></router-view>
         <CommonFooter></CommonFooter>
       </el-main>
@@ -22,9 +22,13 @@ import CommonTab from '../components/common/CommonTab.vue'
 import CommonFooter from '../components/common/CommonFooter.vue'
 
 export default {
-  components: { CommonAside, CommonHeader, CommonTab,CommonFooter }
+  components: { CommonAside, CommonHeader, CommonTab, CommonFooter },
 }
 </script>
-<style lang="">
-
+<style>
+.body-main {
+  background: rgb(231, 234, 237);
+  padding: 10px;
+  background-image: url(../assets/bgimg.png);
+}
 </style>

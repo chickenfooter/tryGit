@@ -9,7 +9,18 @@ import DynamicInfo from '../views/dynamicInfo.vue'
 import CitrusEncyclopedia from '../views/citrusEncyclopedia.vue'
 // 导入设备管理
 import DeviceManagment from '../views/deviceManagment.vue'
+// 导入环境预测
+import EnvironmentalPrediction from '../views/environmental/environmentalPrediction.vue'
+// 带入科学用药
+import ScientificMedication from '../views/scientificMedication.vue'
 
+// 导入疾病防治
+import DiseasePreview from '../views/diseaseControl/diseasePreview.vue'
+import GraphicDiagnosis from '../views/diseaseControl/graphicDiagnosis.vue'
+import VisualDiagnosis from '../views/diseaseControl/visualDiagnosis.vue'
+import IntelligentDiagnosis from '../views/diseaseControl/intelligentDiagnosis.vue'
+import DiseaseDetails from '../views/diseaseControl/diseaseDetails.vue'
+ 
 /***
  * 在升级了Vue-Router版本到到3.1.0及以上之后，页面在跳转路由控制台会报Uncaught (in promise)的问题，
  * 在3.1.0版本里面新增功能：push和replace方法会返回一个promise, 你可能在控制台看到未捕获的异常。
@@ -54,6 +65,41 @@ const routes = [
         path: '/deviceManagment',
         name: 'deviceManagment',
         component: DeviceManagment
+      },
+      {
+        path: '/environmentalPrediction',
+        name: 'environmentalPrediction',
+        component: EnvironmentalPrediction
+      },
+      {
+        path: '/scientificMedication',
+        name: 'scientificMedication',
+        component: ScientificMedication
+      },
+      {
+        path: '/diseasePreview',
+        name: 'diseasePreview',
+        component: DiseasePreview
+      },
+      {
+        path: '/graphicDiagnosis',
+        name: 'graphicDiagnosis',
+        component: GraphicDiagnosis
+      },
+      {
+        path: '/visualDiagnosis',
+        name: 'visualDiagnosis',
+        component: VisualDiagnosis
+      },
+      {
+        path: '/intelligentDiagnosis',
+        name: 'intelligentDiagnosis',
+        component: IntelligentDiagnosis
+      },
+      {
+        path: '/diseaseDetails',
+        name: 'diseaseDetails',
+        component: DiseaseDetails
       }
     ]
   },
