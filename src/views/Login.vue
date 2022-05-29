@@ -3,18 +3,32 @@
     <!-- <div class="logo-box"><img src="../../assets/one.png" alt="" /></div> -->
     <div class="login-box">
       <div class="login-text">柑橘病虫害智慧平台</div>
-      <el-form :model="loginForm" ref="loginFormRef" :rules="loginFormRules">
-        <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名(admin)" @input="change($event)"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="loginForm.password" prefix-icon="el-icon-unlock" placeholder="请输入密码(随意)" @input="change($event)" type="password" @keyup.enter.native="handleLoginForm()"></el-input>
-        </el-form-item>
-        <el-form-item class="btns">
-          <el-button type="primary" @click="handleLoginForm">登录</el-button>
-          <el-button type="primary" @click="loginFormReset">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <el-tabs class="tabs" v-model="activeName">
+        <el-tab-pane label="登录" name="login">
+          <el-form :model="loginForm" ref="loginFormRef" :rules="loginFormRules" class="login-form">
+            <el-form-item prop="username" class="login-form-item1">
+              <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名(admin)" @input="change($event)"></el-input>
+            </el-form-item>
+            <el-form-item prop="password" class="login-form-item2">
+              <el-input
+                v-model="loginForm.password"
+                prefix-icon="el-icon-unlock"
+                placeholder="请输入密码(123456)"
+                @input="change($event)"
+                type="password"
+                @keyup.enter.native="handleLoginForm()"
+              ></el-input>
+            </el-form-item>
+            <el-form-item class="login-form-item3">
+              <el-button type="primary" @click="handleLoginForm">登录</el-button>
+              <el-button type="primary" @click="loginFormReset">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="注册" name="register">
+          <!-- 注册表单 -->
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -22,6 +36,7 @@
 export default {
   data() {
     return {
+      activeName: 'login',
       // 登录表单数据对象
       loginForm: {
         username: '',
@@ -51,11 +66,12 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     // 登录方法
-    handleLoginForm() {
+    async handleLoginForm() {
       this.$refs.loginFormRef.validate(async (valid) => {
         // console.log(valid)
         if (!valid) return
-        if (this.loginForm.username == 'admin') {
+        const { data: res } = await this.$http.post(`/web/user/login`, this.loginForm)
+        if (res.code === 0) {
           this.$message.success('登录成功！')
           // localStorage.setItem('userForm', JSON.stringify(res.data))
           window.localStorage.setItem('token', this.loginForm.password)
@@ -127,9 +143,48 @@ export default {
   font-size: 18px;
   color: #666666;
 }
-.btns {
+.login-form-item3 {
   width: 100%;
   text-align: center;
   margin-top: 50px;
 }
+::v-deep .el-tabs__header {
+  margin-top: -50px;
+  margin-bottom: 40px;
+  margin-left: 25px;
+}
+::v-deep .el-tabs__content {
+  overflow: visible;
+}
+::v-deep .el-tabs__item {
+  font-size: 16px;
+  color: white;
+}
+::v-deep .el-tabs__item.is-active {
+  color: #15cbf3;
+}
+::v-deep .el-icon-arrow-left {
+  color: white;
+}
+::v-deep .el-icon-arrow-right {
+  color: white;
+}
+::v-deep .el-tabs__nav-wrap::after {
+  height: 0;
+}
+::v-deep .el-tabs__active-bar {
+  background-color: #15cbf3;
+}
+// .login-form {
+// 	margin-top: 20px;
+// 	@for $i from 1 through 3 {
+// 		.login-form-item#{$i} {
+// 			opacity: 0;
+// 			animation-name: error-num;
+// 			animation-duration: 0.5s;
+// 			animation-fill-mode: forwards;
+// 			animation-delay: calc($i/10) + s;
+// 		}
+// 	}
+// }
 </style>

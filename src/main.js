@@ -24,7 +24,7 @@ Vue.config.productionTip = false
 // 将导入的接口文件全局挂载在vue全局上
 // Vue.prototype.$api = api
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://175.178.222.176:9199'
+axios.defaults.baseURL = 'http://120.77.156.205:8804'
 // axios.defaults.withCredentials = false
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8/x-www-form-urlencoded';
 
