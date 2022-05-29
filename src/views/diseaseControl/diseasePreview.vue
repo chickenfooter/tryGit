@@ -24,10 +24,10 @@
       </div>
     </el-card>
     <el-card shadow="never">
-      <el-table :data="tableData"  max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
-        <el-table-column prop="date" label="序号" width="180"> </el-table-column>
-        <el-table-column prop="diseaseChineseName" label="疾病名称" width="180"> </el-table-column>
-        <el-table-column prop="disasterTypeName" label="疾病类型"> </el-table-column>
+      <el-table v-loading="loading" :data="tableData" max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
+        <el-table-column prop="date" label="序号" width="80"> </el-table-column>
+        <el-table-column prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
+        <el-table-column prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
         <el-table-column prop="diseaseIntroduce" label="疾病简介"> </el-table-column>
         <el-table-column prop="diseaseSymptom" label="疾病表现"> </el-table-column>
       </el-table>
@@ -35,7 +35,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pageInfo.pagenum"
-        :page-sizes="[10,14,16,20]"
+        :page-sizes="[10, 14, 16, 20]"
         :page-size="pageInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -64,6 +64,7 @@ export default {
         { value: '果实', label: '果实' },
       ],
       tableData: [],
+      loading: true
     }
   },
   created() {
@@ -72,16 +73,17 @@ export default {
   methods: {
     // 分页获取疾病数据
     async getDiseaseInfo() {
-      const {data:res} = await this.$http.get(`/dev2/disease-information/browse?pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
+      const { data: res } = await this.$http.get(`/dev2/disease-information/browse?pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
       console.log(res)
-      if(res.code === 0) {
+      if (res.code === 0) {
         this.tableData = res.data.browse.records
         this.total = res.data.browse.total
       }
+      this.loading = false
     },
     openedDetails(row) {
       console.log('点击', row)
-      this.$router.push('/diseaseDetails')
+      this.$router.push({ path: '/diseaseDetails', query: { id: row.diseaseId } })
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)

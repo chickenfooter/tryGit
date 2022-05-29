@@ -5,6 +5,7 @@ import Main from '../views/Main.vue'
 
 // 导入动态资讯
 import DynamicInfo from '../views/dynamicInfo.vue'
+import DynamicDetails from '../views/dynamicDetails.vue'
 // 导入柑橘百科
 import CitrusEncyclopedia from '../views/citrusEncyclopedia.vue'
 // 导入设备管理
@@ -55,6 +56,11 @@ const routes = [
         path: '/dynamicInfo',
         name: 'dynamicInfo',
         component: DynamicInfo
+      },
+      {
+        path: '/dynamicDetails',
+        name: 'dynamicDetails',
+        component: DynamicDetails
       },
       {
         path: '/citrusEncyclopedia',
