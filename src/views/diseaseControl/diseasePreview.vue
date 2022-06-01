@@ -4,22 +4,23 @@
       <div class="search-card">
         <div class="search-input">
           <div style="flex-shrink: 0">疾病名称：</div>
-          <el-input size="small" style="margin-left: 10px" placeholder="请输入内容"></el-input>
+          <el-input size="small" style="margin-left: 10px" v-model="searchInfo.name" placeholder="请输入内容"></el-input>
         </div>
         <div>
           <span>疾病部位:</span>
-          <el-select size="small" style="margin-left: 10px" placeholder="请选择">
-            <el-option v-for="item in partOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+          <el-select size="small" style="margin-left: 10px" placeholder="请选择" v-model="searchInfo.part">
+            <el-option v-for="part in partOptions" :key="part.value" :label="part.label" :value="part.value"> </el-option>
           </el-select>
         </div>
         <div>
           <span>疾病类型:</span>
-          <el-select size="small" style="margin-left: 10px" placeholder="请选择">
-            <el-option v-for="item in partOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+          <el-select size="small" style="margin-left: 10px" placeholder="请选择" v-model="searchInfo.disease">
+            <el-option v-for="item in diseaseOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
         </div>
         <div>
-          <el-button type="search" size="small">查询</el-button>
+          <el-button size="small" @click="newSearchInfo()">重置</el-button>
+          <el-button type="search" size="small" @click="toSearch()">查询</el-button>
         </div>
       </div>
     </el-card>
@@ -29,7 +30,14 @@
         <el-table-column prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
         <el-table-column prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
         <el-table-column prop="diseaseIntroduce" label="疾病简介"> </el-table-column>
-        <el-table-column prop="diseaseSymptom" label="疾病表现"> </el-table-column>
+        <el-table-column label="疾病表现">
+          <template slot-scope="props">
+            <el-tooltip class="item" effect="dark" placement="top">
+              <div style="width: 440px; font-size: 16px" slot="content">{{ props.row.diseaseSymptom }}</div>
+              <div>{{ props.row.diseaseSymptom }}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -58,13 +66,28 @@ export default {
       total: 10,
       flag: true,
       partOptions: [
-        { value: '根', label: '根' },
-        { value: '茎', label: '茎' },
-        { value: '叶', label: '叶' },
-        { value: '果实', label: '果实' },
+        { value: '1', label: '根' },
+        { value: '2', label: '茎' },
+        { value: '3', label: '叶' },
+        { value: '4', label: '树干' },
+        { value: '5', label: '枝' },
+        { value: '6', label: '新梢' },
+        { value: '7', label: '果' },
       ],
+      diseaseOptions: [
+        { value: '1', label: '虫害' },
+        { value: '2', label: '病害' },
+        { value: '3', label: '生理病害' },
+        { value: '4', label: '草害' },
+        { value: '5', label: '天敌' },
+      ],
+      searchInfo: {
+        name: '',
+        part: '',
+        disease: '',
+      },
       tableData: [],
-      loading: true
+      loading: true,
     }
   },
   created() {
@@ -81,9 +104,80 @@ export default {
       }
       this.loading = false
     },
+    // 查看详情
     openedDetails(row) {
       console.log('点击', row)
       this.$router.push({ path: '/diseaseDetails', query: { id: row.diseaseId } })
+    },
+    // 查询
+    async toSearch() {
+      console.log(this.searchInfo, '查询数据')
+      if (this.searchInfo.name === '' && this.searchInfo.part === '') {
+        const { data: res } = await this.$http.get(`/dev2/disease-information/browseLike?disasterTypeId=${this.searchInfo.disease}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.name === '' && this.searchInfo.disease === '') {
+        const { data: res } = await this.$http.get(`/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.part}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.part === '' && this.searchInfo.disease) {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/browseLike?diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.name === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&disasterTypeId=${this.searchInfo.part}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.part === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/browseLike?disasterTypeId=${this.searchInfo.part}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.disease === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      } else {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&disasterTypeId=${this.searchInfo.part}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.tableData = res.data.browse.records
+          this.total = res.data.browse.total
+          this.$message.success("查询成功")
+        }
+      }
+    },
+    // 重置查询条件
+    newSearchInfo() {
+      this.searchInfo.name = '',
+      this.searchInfo.part = '',
+      this.searchInfo.disease = ''
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
@@ -109,5 +203,10 @@ export default {
 .el-button--search {
   background: rgb(8, 46, 83);
   color: #fff;
+}
+::v-deep .cell {
+  height: 71px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

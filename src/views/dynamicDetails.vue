@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-card v-html="htmlInfo"></el-card>
+    <el-card>
+      <div class="box">
+          <div class="title">{{title}}</div>
+           <el-divider></el-divider>
+        <div  v-loading="loading" v-html="htmlInfo"></div>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -11,11 +17,14 @@ export default {
       obj: {
         detailUrl: '',
       },
+      title: '',
       htmlInfo: '',
+      loading: true
     }
   },
   created() {
     this.obj.detailUrl = this.$route.query.url
+    this.title = this.$route.query.title
     this.getDetails()
   },
   methods: {
@@ -26,10 +35,30 @@ export default {
       if (res.code === 0) {
         this.htmlInfo = res.data.htmlText
       }
+      this.loading = false
     },
   },
 }
 </script>
 
 <style scoped>
+.box {
+  min-height: 640px;
+}
+::v-deep p {
+    text-indent: 2em;
+    line-height: 26px;
+    font-size: 16px;
+    color: #222;
+    margin-bottom: 15px;
+}
+.title {
+    text-align: center;
+    font-size: 32px;
+}
+.el-divider--horizontal {
+  /* margin-top: 0px; */
+  height: 3px;
+  background-color: coral;
+}
 </style>

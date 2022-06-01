@@ -21,6 +21,9 @@ import GraphicDiagnosis from '../views/diseaseControl/graphicDiagnosis.vue'
 import VisualDiagnosis from '../views/diseaseControl/visualDiagnosis.vue'
 import IntelligentDiagnosis from '../views/diseaseControl/intelligentDiagnosis.vue'
 import DiseaseDetails from '../views/diseaseControl/diseaseDetails.vue'
+
+// 导入柑橘功效
+import CitrusEfficacy from '../views/citrusEfficacy.vue'
  
 /***
  * 在升级了Vue-Router版本到到3.1.0及以上之后，页面在跳转路由控制台会报Uncaught (in promise)的问题，
@@ -106,6 +109,11 @@ const routes = [
         path: '/diseaseDetails',
         name: 'diseaseDetails',
         component: DiseaseDetails
+      },
+      {
+        path: '/citrusEfficacy',
+        name: 'citrusEfficacy',
+        component: CitrusEfficacy
       }
     ]
   },

@@ -84,18 +84,25 @@
           <div v-show="activeName === 'second'">
             <div class="controlBox">
               <span>病原物：</span>
-              <span style="color:  rgb(255, 153, 0)">{{ detailsInfo.diseasePathogen }}</span>
+              <span style="color: rgb(255, 153, 0)">{{ detailsInfo.diseasePathogen }}</span>
               <div style="margin-top: 20px; font-size: 20px; color: coral">防控措施</div>
               <el-divider></el-divider>
-              <div style="color: rgb(255, 153, 0)">{{detailsInfo.diseaseTreatment}}</div>
+              <div style="color: rgb(255, 153, 0)">{{ detailsInfo.diseaseTreatment }}</div>
               <div style="margin-top: 40px; font-size: 20px; color: coral">{{ detailsInfo.diseaseChineseName }}防治课堂</div>
               <el-divider></el-divider>
-              <a :href="detailsInfo.diseaseVideo">{{ detailsInfo.diseaseChineseName }}防治视频教学：{{detailsInfo.diseaseVideo}}</a>
+              <a :href="detailsInfo.diseaseVideo">{{ detailsInfo.diseaseChineseName }}防治视频教学：{{ detailsInfo.diseaseVideo }}</a>
             </div>
           </div>
           <!-- 分布 -->
           <div v-show="activeName === 'third'">
             <img style="height: 600px; width: 100%" :src="detailsInfo.diseaseDistribution" alt="" />
+          </div>
+          <!-- 图片集 -->
+          <div class="picture" v-show="activeName === 'fourth'">
+            <div class="pictureChoose">
+              <el-radio @change="pictureType" v-for="(item, index) in radioInfo" :key="index" v-model="radio" :label="index">{{ item }}</el-radio>
+            </div>
+            <img v-for="(item, index) in pictureInfo" :key="index" :src="item" alt="" />
           </div>
         </el-card>
       </div>
@@ -107,6 +114,8 @@
 export default {
   data() {
     return {
+      radioInfo: ['全部', '根', '茎', '叶', '树干', '枝', '新梢', '果'],
+      radio: 0,
       diseaseId: '',
       detailsInfo: {},
       activeName: 'first',
@@ -121,11 +130,13 @@ export default {
         diseaseEnglishName: '',
         diseaseTrivialName: '',
       },
+      pictureInfo: [],
     }
   },
   created() {
     this.getDiseaseId()
     this.getDetailsInfo()
+    this.getPictureInfo()
   },
   methods: {
     // 接收参数
@@ -139,6 +150,31 @@ export default {
       console.log(res)
       if (res.code === 0) {
         this.detailsInfo = res.data.showDiseaseInfoVO
+      }
+    },
+    // 根据主键获取图片集
+    async getPictureInfo() {
+      const { data: res } = await this.$http.get(`/dev3/picture/getpicAndName/${this.diseaseId}`)
+      if (res.code === 0) {
+        this.pictureInfo = res.data.list
+      }
+    },
+    // 对应部位的图片
+    async pictureType() {
+      if (this.radio) {
+        const { data: res } = await this.$http.get(`/dev3/picture/getpicAndName/${this.diseaseId}/${this.radio}`)
+        if (res.code === 0) {
+          // 将文字都删除掉，留下对应的链接
+          res.data.list.forEach((item, index, arr) => {
+            // 不是链接的删除掉
+            if(item.indexOf("http") == -1) {
+              arr.splice(index,1)
+            }
+          })
+          this.pictureInfo = res.data.list
+        }
+      } else {
+        this.getPictureInfo()
       }
     },
     handleClick(tab, event) {
@@ -235,5 +271,16 @@ export default {
   margin-top: 0px;
   height: 3px;
   background-color: coral;
+}
+.picture img {
+  margin-right: 10px;
+  width: 285px;
+  height: 245px;
+}
+.pictureChoose {
+  margin-bottom: 25px;
+}
+::v-deep .el-radio__label {
+  font-size: 17px;
 }
 </style>

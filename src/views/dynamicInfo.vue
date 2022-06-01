@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div v-infinite-scroll="load">
     <el-card shadow="never" class="body-card" v-loading="loading">
       <div class="newBox" v-for="(item, index) in newInfo" :key="index">
         <img v-show="item.picUrl === ''" class="imgBox" :src="item.picUrl" alt="" />
-        <div class="textBox" @click="openDetail(item.detailUrl)">
+        <div class="textBox" @click="openDetail(item.detailUrl, item.title)">
           <div class="title">{{ item.title }}</div>
           <p class="content">{{ item.introduction }}</p>
           <div class="time">{{ item.publishTime }}</div>
@@ -20,23 +20,36 @@ export default {
     return {
       newInfo: [],
       loading: true,
+      conut: 1,
     }
   },
   created() {
     this.getInfo()
   },
   methods: {
+    //   触底事件
+    load() {
+      if (this.conut < 10 && this.conut != 1) {
+        this.getInfo()
+        console.log(123)
+        this.conut++
+      }
+    },
     //   获取数据
     async getInfo() {
-      const { data: res } = await this.$http.get(`/dev1/news/paChong/9`)
+      this.loading = true
+      const { data: res } = await this.$http.get(`/dev1/news/paChong/${this.conut}`)
       if (res.code === 0) {
-        this.newInfo = res.data.list
+        this.newInfo = this.newInfo.concat(res.data.list)
         console.log(this.newInfo)
+      }
+      if (this.conut == 1) {
+        this.conut = 2
       }
       this.loading = false
     },
-    openDetail(e) {
-      this.$router.push({ path: '/dynamicDetails', query: { url: e } })
+    openDetail(e, title) {
+      this.$router.push({ path: '/dynamicDetails', query: { url: e, title: title } })
     },
   },
 }
