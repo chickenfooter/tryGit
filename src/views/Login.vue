@@ -27,6 +27,25 @@
         </el-tab-pane>
         <el-tab-pane label="注册" name="register">
           <!-- 注册表单 -->
+         <el-form :model="registerForm" ref="registerFormRef" :rules="loginFormRules" class="login-form">
+            <el-form-item prop="username" class="login-form-item1">
+              <el-input v-model="registerForm.username" prefix-icon="el-icon-s-custom"
+               placeholder="请输入用户名" @input="change($event)"></el-input>
+            </el-form-item>
+            <el-form-item prop="password" class="login-form-item2">
+              <el-input
+                v-model="registerForm.password"
+                prefix-icon="el-icon-unlock"
+                placeholder="请输入密码"
+                @input="change($event)"
+                type="password"
+                 @keyup.enter.native="handleRegisterForm()"
+              ></el-input>
+            </el-form-item>
+            <el-form-item class="login-form-item3">
+              <el-button type="primary" @click="handleRegisterForm">注册</el-button>
+            </el-form-item>
+          </el-form>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -40,19 +59,31 @@ export default {
       // 登录表单数据对象
       loginForm: {
         username: '',
+        password: ''
+      },
+      // 注册表单数据对象
+      registerForm: {
+        avater: '',
+        gmtCreate: '',
+        gmtModified: '',
+        id: '',
+        isDeleted: 0,
         password: '',
+        phone: '',
+        realName: '',
+        status: 0,
+        username: ''
+      },
+      // 注册表单的校验对象
+      registerFormRules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }]
       },
       // 登录表单的校验对象
       loginFormRules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
-        ],
-      },
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }]
+      }
     }
   },
 
@@ -65,9 +96,25 @@ export default {
     loginFormReset() {
       this.$refs.loginFormRef.resetFields()
     },
+    // 注册方法
+    async handleRegisterForm() {
+      this.$refs.registerFormRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        const { data: res } = await this.$http.post(`/web/user/register`, this.registerForm)
+        if (res.code === 0) {
+          this.$message.success('注册成功！')
+          // localStorage.setItem('userForm', JSON.stringify(res.data))
+          window.localStorage.setItem('token', this.registerForm.password)
+          // this.$router.push('/main')
+        } else {
+          this.$message.error('注册失败')
+        }
+      })
+    },
     // 登录方法
     async handleLoginForm() {
-      this.$refs.loginFormRef.validate(async (valid) => {
+      this.$refs.loginFormRef.validate(async valid => {
         // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.post(`/web/user/login`, this.loginForm)
@@ -91,8 +138,8 @@ export default {
       //   this.$store.commit('user/save_login', this.loginForm)
       //   this.$router.push('/main')
       // })
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
