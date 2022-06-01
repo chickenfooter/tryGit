@@ -23,6 +23,12 @@
         </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
+    <!-- 最后一个菜单 -->
+     <el-menu-item :index="item.path" v-for="item in lastChildren" :key="item.path" @click="clickMenu(item)">
+      <!-- <i :class="'el-icon-' + item.icon"></i> -->
+      <img style="width:20px;height:20px" :src="item.icon">
+      <span slot="title" style="font-size:15px;margin-left:5px">{{ item.label }}</span>
+    </el-menu-item>
   </el-menu>
 </template>
 <script>
@@ -36,10 +42,14 @@ export default {
   computed: {
     // 判断导航栏是否有子节点
     noChildren() {
-      return this.asideMenu.filter(item => !item.children)
+      // this.asideMenu.filter(item => console.log(item,"导航"))
+      return this.asideMenu.filter(item => !item.children&&item.label != "设备管理")
     },
     hasChildren() {
       return this.asideMenu.filter(item => item.children)
+    },
+    lastChildren() {
+      return this.asideMenu.filter(item => item.label === "设备管理")
     },
     isCollapse() {
       return this.$store.state.menu.isCollapse
