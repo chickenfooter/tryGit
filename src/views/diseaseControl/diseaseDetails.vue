@@ -91,6 +91,11 @@
               <div style="margin-top: 40px; font-size: 20px; color: coral">{{ detailsInfo.diseaseChineseName }}防治课堂</div>
               <el-divider></el-divider>
               <a :href="detailsInfo.diseaseVideo">{{ detailsInfo.diseaseChineseName }}防治视频教学：{{ detailsInfo.diseaseVideo }}</a>
+              <div style="margin-top: 40px; font-size: 20px; color: coral">{{ detailsInfo.diseaseChineseName }}用药指导</div>
+              <el-divider></el-divider>
+              <span class="insecticideName" v-for="(item, index) in picAndInfo" :key="index" @click="insecticideUse(item)">
+                {{ item }}
+              </span>
             </div>
           </div>
           <!-- 分布 -->
@@ -107,6 +112,27 @@
         </el-card>
       </div>
     </el-card>
+    <!-- 使用详情 -->
+    <el-dialog title="使用详情" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+      <div>
+        <div style="margin-bottom:15px">
+          <span class="dialog_span">使用说明：</span><span class="dialog_span1">{{ insecticideDetails.instruction }}</span>
+        </div>
+        <div style="margin-bottom:15px">
+          <span class="dialog_span">储存说明：</span><span class="dialog_span1">{{ insecticideDetails.attention }}</span>
+        </div>
+        <div style="margin-bottom:15px">
+          <span class="dialog_span">使用注意事项：</span><span class="dialog_span1">{{ insecticideDetails.emergencyTreatment }}</span>
+        </div>
+        <div style="margin-bottom:15px">
+          <span class="dialog_span">其他：</span><span class="dialog_span1">{{ insecticideDetails.remarks }}</span>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +157,10 @@ export default {
         diseaseTrivialName: '',
       },
       pictureInfo: [],
+      picAndInfo: [],
+      // 农药使用详情
+      insecticideDetails: {},
+      dialogVisible: false,
     }
   },
   created() {
@@ -150,6 +180,7 @@ export default {
       console.log(res)
       if (res.code === 0) {
         this.detailsInfo = res.data.showDiseaseInfoVO
+        this.getpicAndInfo()
       }
     },
     // 根据主键获取图片集
@@ -167,8 +198,8 @@ export default {
           // 将文字都删除掉，留下对应的链接
           res.data.list.forEach((item, index, arr) => {
             // 不是链接的删除掉
-            if(item.indexOf("http") == -1) {
-              arr.splice(index,1)
+            if (item.indexOf('http') == -1) {
+              arr.splice(index, 1)
             }
           })
           this.pictureInfo = res.data.list
@@ -177,9 +208,36 @@ export default {
         this.getPictureInfo()
       }
     },
+    // 根据疾病名称获取对应农药
+    async getpicAndInfo() {
+      // this.detailsInfo.diseaseTrivialName
+      if (this.detailsInfo.diseaseChineseName === '柑桔黄龙病') {
+        this.detailsInfo.diseaseChineseName = '柑橘黄龙病'
+      }
+      const { data: res } = await this.$http.get(`/orange_service/insecticide/getpicAndName/{diseaseName}?diseaseName=${this.detailsInfo.diseaseChineseName}`)
+      // console.log(res)
+      if (res.code === 0) {
+        this.picAndInfo = res.data.list
+      }
+    },
+    // 根据农药名称获取农药使用详情
+    async insecticideUse(e) {
+      this.dialogVisible = true
+      const { data: res } = await this.$http.get(`/orange_service/insecticide/getpicAndName/{insecticideName}?insecticideName=${e}`)
+      if (res.code === 0) {
+        this.insecticideDetails = res.data.insecticideVoArrayList[0]
+      }
+    },
     handleClick(tab, event) {
       console.log(tab.name, event)
       console.log(this.activeName)
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then((_) => {
+          done()
+        })
+        .catch((_) => {})
     },
   },
 }
@@ -239,6 +297,8 @@ export default {
 }
 .imgBox {
   border: 1px solid #000;
+  width: 270px;
+  height: 240px;
 }
 .dashed {
   padding-bottom: 10px;
@@ -282,5 +342,21 @@ export default {
 }
 ::v-deep .el-radio__label {
   font-size: 17px;
+}
+.insecticideName {
+  font-size: 19px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+.insecticideName:hover {
+  color: coral;
+}
+.dialog_span {
+  font-size: 18px;
+  color: coral;
+}
+.dialog_span1 {
+  font-size: 16px;
+  line-height: 15px;
 }
 </style>

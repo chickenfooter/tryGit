@@ -1,2 +1,6 @@
-# 辩论队信息库
-主要用于信息储存
+# 柑橘智慧平台
+
+# git clone 
+# npm install
+# npm run serve
+# npm run build

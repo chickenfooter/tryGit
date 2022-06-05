@@ -137,7 +137,7 @@ export default {
         }
       } else if (this.searchInfo.name === '') {
         const { data: res } = await this.$http.get(
-          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&disasterTypeId=${this.searchInfo.part}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.part}&disasterTypeId=${this.searchInfo.disease}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )
         if (res.code === 0) {
           this.tableData = res.data.browse.records
@@ -146,7 +146,7 @@ export default {
         }
       } else if (this.searchInfo.part === '') {
         const { data: res } = await this.$http.get(
-          `/dev2/disease-information/browseLike?disasterTypeId=${this.searchInfo.part}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+          `/dev2/disease-information/browseLike?disasterTypeId=${this.searchInfo.disease}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )
         if (res.code === 0) {
           this.tableData = res.data.browse.records
@@ -155,7 +155,7 @@ export default {
         }
       } else if (this.searchInfo.disease === '') {
         const { data: res } = await this.$http.get(
-          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.part}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )
         if (res.code === 0) {
           this.tableData = res.data.browse.records
@@ -164,7 +164,7 @@ export default {
         }
       } else {
         const { data: res } = await this.$http.get(
-          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.disease}&disasterTypeId=${this.searchInfo.part}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+          `/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.part}&disasterTypeId=${this.searchInfo.disease}&diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )
         if (res.code === 0) {
           this.tableData = res.data.browse.records
@@ -181,9 +181,13 @@ export default {
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.pageInfo.pagesize = val;
+      this.getDiseaseInfo()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.pageInfo.pagenum = val;
+      this.getDiseaseInfo()
     },
   },
 }

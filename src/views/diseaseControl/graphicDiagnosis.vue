@@ -2,34 +2,35 @@
   <!-- 图文诊断 -->
   <div>
     <!-- 查询 -->
-       <el-card shadow="never" style="margin-bottom: 15px">
+    <el-card shadow="never" style="margin-bottom: 15px">
       <div class="search-card">
         <div class="search-input">
           <div style="flex-shrink: 0">疾病名称：</div>
-          <el-input size="small" style="margin-left: 10px" placeholder="请输入内容"></el-input>
+          <el-input v-model="searchKey" size="small" style="margin-left: 10px" placeholder="请输入内容"></el-input>
         </div>
         <div>
           <span>疾病部位:</span>
-          <el-select size="small" style="margin-left: 10px" placeholder="请选择">
+          <el-select v-model="searchInfo.citrusPartId" size="small" style="margin-left: 10px" placeholder="请选择">
             <el-option v-for="item in partOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
         </div>
         <div>
           <span>疾病类型:</span>
-          <el-select size="small" style="margin-left: 10px" placeholder="请选择">
+          <el-select v-model="searchInfo.disasterTypeId" size="small" style="margin-left: 10px" placeholder="请选择">
             <el-option v-for="item in diseaseOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
         </div>
         <div>
-          <el-button type="search" size="small">查询</el-button>
+          <el-button size="small" @click="newSearchInfo()">重置</el-button>
+          <el-button type="search" @click="searchDiseaseSelect()" size="small">查询</el-button>
         </div>
       </div>
     </el-card>
     <!-- 查询结束 -->
     <!-- 展示开始 -->
     <el-card shadow="never">
-      <el-row :gutter="20" v-for="(item, index) in Math.ceil(graphicInfo.length / 3)" :key="index">
-        <el-col :span="8">
+      <el-row v-loading="loading" :gutter="20" v-for="(item, index) in length" :key="index">
+        <el-col :span="8" v-if="(item - 1) * 3 + 0 < graphicInfo.length">
           <div class="boxDiv">
             <el-tooltip class="item" effect="light" content="预览" placement="top">
               <el-image
@@ -44,7 +45,7 @@
             </el-tooltip>
           </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="(item - 1) * 3 + 1 < graphicInfo.length">
           <div class="boxDiv">
             <el-tooltip class="item" effect="light" content="预览" placement="top">
               <el-image
@@ -59,7 +60,7 @@
             </el-tooltip>
           </div></el-col
         >
-        <el-col :span="8">
+        <el-col :span="8" v-if="(item - 1) * 3 + 2 < graphicInfo.length">
           <div class="boxDiv">
             <el-tooltip class="item" effect="light" content="预览" placement="top">
               <el-image
@@ -75,6 +76,16 @@
           </div></el-col
         >
       </el-row>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageInfo.pagenum"
+        :page-sizes="[9, 12, 15]"
+        :page-size="pageInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -88,11 +99,37 @@ export default {
         pagenum: 1,
         pagesize: 12,
       },
+      total: 0,
+      partOptions: [
+        { value: '1', label: '根' },
+        { value: '2', label: '茎' },
+        { value: '3', label: '叶' },
+        { value: '4', label: '树干' },
+        { value: '5', label: '枝' },
+        { value: '6', label: '新梢' },
+        { value: '7', label: '果' },
+      ],
+      diseaseOptions: [
+        { value: '1', label: '虫害' },
+        { value: '2', label: '病害' },
+        { value: '3', label: '生理病害' },
+        { value: '4', label: '草害' },
+        { value: '5', label: '天敌' },
+      ],
+      length: 0,
+      searchInfo: {
+        // 部位
+        citrusPartId: '',
+        // 疾病类型
+        disasterTypeId: '',
+      },
+      searchKey: '',
+      loading: true,
     }
   },
   created() {
     this.getgraphicInfo()
-    console.log(Math.ceil(4 / 3))
+    console.log(Math.ceil(7 / 3), '长度')
   },
   methods: {
     // 获取图文
@@ -100,10 +137,64 @@ export default {
       const { data: res } = await this.$http.get(`/dev2/disease-information/showDiseasePicture?pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
       if (res.code === 0) {
         this.graphicInfo = res.data.diseasePictureNameVOPage.records
+        this.total = res.data.diseasePictureNameVOPage.total
+        console.log(Math.ceil(this.graphicInfo.length / 3))
+        this.length = Math.ceil(this.graphicInfo.length / 3)
+        this.loading = false
       }
     },
+    // 查询疾病
+    async searchDiseaseSelect() {
+      if (this.searchInfo.disasterTypeId === '' && this.searchInfo.citrusPartId != '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.$message.success('查询成功')
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+        }
+      } else if (this.searchInfo.citrusPartId === '' && this.searchInfo.disasterTypeId != '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?disasterTypeId=${this.searchInfo.disasterTypeId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.$message.success('查询成功')
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+        }
+      } else {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&disasterTypeId=${this.searchInfo.disasterTypeId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.$message.success('查询成功')
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+        }
+      }
+    },
+    // 重置查询条件
+    newSearchInfo() {
+      ;(this.searchInfo.citrusPartId = ''), (this.searchInfo.disasterTypeId = '')
+    },
+
     openDetails(index) {
       this.$router.push({ path: '/diseaseDetails', query: { id: this.graphicInfo[index].diseaseId } })
+    },
+
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.pageInfo.pagesize = val
+      this.getgraphicInfo()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.pageInfo.pagenum = val
+      this.getgraphicInfo()
     },
   },
 }
@@ -126,7 +217,7 @@ export default {
 }
 ::v-deep .el-col {
   height: 120px;
-  width: 452px;
+  width: 400px;
   border: 1px solid #d9d9d9;
   margin-left: 22px;
   margin-bottom: 22px;
