@@ -46,11 +46,11 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="10" class="dashed">
+              <el-row v-if="detailsInfo.disasterTypeName != ''" :gutter="10" class="dashed">
                 <el-col :span="20">
                   <div class="mes">
                     <p class="mes1">分类：</p>
-                    <!-- <p>{{ showPassword }}</p> -->
+                    <p class="mes2">{{ detailsInfo.disasterTypeName }}</p>
                   </div>
                 </el-col>
               </el-row>
@@ -107,7 +107,11 @@
             <div class="pictureChoose">
               <el-radio @change="pictureType" v-for="(item, index) in radioInfo" :key="index" v-model="radio" :label="index">{{ item }}</el-radio>
             </div>
-            <img v-for="(item, index) in pictureInfo" :key="index" :src="item" alt="" />
+            <!-- <img v-for="(item, index) in pictureInfo" :key="index" :src="item" alt="" /> -->
+            <div class="picDiv" v-for="(item, index) in pictureInfo" :key="index">
+              <img :src="item.picUrls || item.pictureUrl" alt="" />
+              <div class="picName">{{ item.picName || item.pictureName }}</div>
+            </div>
           </div>
         </el-card>
       </div>
@@ -115,7 +119,28 @@
     <!-- 使用详情 -->
     <el-dialog title="使用详情" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
       <div>
-        <div style="margin-bottom:15px">
+        <table class="tableInfo" :model="insecticideDetails" id="printTest">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td class="tdName">使用方法</td>
+              <td class="tdInfo">{{ insecticideDetails.instruction }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">注意事项</td>
+              <td class="tdInfo">{{ insecticideDetails.attention | formatTimer('hours') }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">紧急措施</td>
+              <td class="tdInfo">{{ insecticideDetails.emergencyTreatment | formatTimer('hours') }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">其他</td>
+              <td class="tdInfo">{{ insecticideDetails.remarks }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div style="margin-bottom:15px">
           <span class="dialog_span">使用说明：</span><span class="dialog_span1">{{ insecticideDetails.instruction }}</span>
         </div>
         <div style="margin-bottom:15px">
@@ -126,7 +151,7 @@
         </div>
         <div style="margin-bottom:15px">
           <span class="dialog_span">其他：</span><span class="dialog_span1">{{ insecticideDetails.remarks }}</span>
-        </div>
+        </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -187,7 +212,7 @@ export default {
     async getPictureInfo() {
       const { data: res } = await this.$http.get(`/dev3/picture/getpicAndName/${this.diseaseId}`)
       if (res.code === 0) {
-        this.pictureInfo = res.data.list
+        this.pictureInfo = res.data.pictureVos
       }
     },
     // 对应部位的图片
@@ -195,13 +220,13 @@ export default {
       if (this.radio) {
         const { data: res } = await this.$http.get(`/dev3/picture/getpicAndName/${this.diseaseId}/${this.radio}`)
         if (res.code === 0) {
-          // 将文字都删除掉，留下对应的链接
-          res.data.list.forEach((item, index, arr) => {
-            // 不是链接的删除掉
-            if (item.indexOf('http') == -1) {
-              arr.splice(index, 1)
-            }
-          })
+          // // 将文字都删除掉，留下对应的链接
+          // res.data.list.forEach((item, index, arr) => {
+          //   // 不是链接的删除掉
+          //   if (item.indexOf('http') == -1) {
+          //     arr.splice(index, 1)
+          //   }
+          // })
           this.pictureInfo = res.data.list
         }
       } else {
@@ -214,8 +239,8 @@ export default {
       if (this.detailsInfo.diseaseChineseName === '柑桔黄龙病') {
         this.detailsInfo.diseaseChineseName = '柑橘黄龙病'
       }
-      const { data: res } = await this.$http.get(`/orange_service/insecticide/getpicAndName/{diseaseName}?diseaseName=${this.detailsInfo.diseaseChineseName}`)
-      // console.log(res)
+      const { data: res } = await this.$http.get(`/orange_service/insecticide/getInsecticide/{diseaseName}?diseaseName=${this.detailsInfo.diseaseChineseName}`)
+      // console.log(res,"农药")
       if (res.code === 0) {
         this.picAndInfo = res.data.list
       }
@@ -358,5 +383,37 @@ export default {
 .dialog_span1 {
   font-size: 16px;
   line-height: 15px;
+}
+.picDiv {
+  display: inline-block;
+  width: 270px;
+  height: 280px;
+  margin-right: 10px;
+}
+.picDiv img {
+  padding-right: 10px;
+}
+.picName {
+  text-align: center;
+  font-size: 16px;
+}
+.tableInfo {
+  border-collapse: collapse;
+  margin: 0 auto;
+  text-align: center;
+}
+.tableInfo td,
+.tableInfo th {
+  border: 1px solid #333;
+  color: #666;
+  height: 60px;
+}
+.tdName {
+  font-size: 18px;
+  width: 100px;
+  background-color: #cad9ea;
+}
+.tdInfo {
+  font-size: 16px;
 }
 </style>

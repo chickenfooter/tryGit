@@ -1,5 +1,5 @@
 <template>
-  <div v-infinite-scroll="load">
+  <div v-infinite-scroll="load" class="infoDiv">
     <el-card shadow="never" class="body-card" v-loading="loading">
       <div class="newBox" v-for="(item, index) in newInfo" :key="index">
         <img v-show="item.picUrl === ''" class="imgBox" :src="item.picUrl" alt="" />
@@ -58,6 +58,7 @@ export default {
 <style scoped>
 .body-card {
   width: 100%;
+  min-height: 400px;
 }
 .newBox {
   display: flex;

@@ -26,7 +26,7 @@
     </el-card>
     <el-card shadow="never">
       <el-table v-loading="loading" :data="tableData" max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
-        <el-table-column prop="date" label="序号" width="80"> </el-table-column>
+        <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
         <el-table-column prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
         <el-table-column prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
         <el-table-column prop="diseaseIntroduce" label="疾病简介"> </el-table-column>

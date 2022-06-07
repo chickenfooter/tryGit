@@ -6,7 +6,7 @@
       <div class="search-card">
         <div class="search-input">
           <div style="flex-shrink: 0">疾病名称：</div>
-          <el-input v-model="searchKey" size="small" style="margin-left: 10px" placeholder="请输入内容"></el-input>
+          <el-input v-model="searchInfo.diseaseChineseName" size="small" style="margin-left: 10px" placeholder="请输入内容"></el-input>
         </div>
         <div>
           <span>疾病部位:</span>
@@ -122,6 +122,8 @@ export default {
         citrusPartId: '',
         // 疾病类型
         disasterTypeId: '',
+        // 名称
+        diseaseChineseName: ''
       },
       searchKey: '',
       loading: true,
