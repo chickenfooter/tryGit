@@ -4,7 +4,7 @@
       <CommonAside></CommonAside>
     </el-aside>
     <el-container>
-      <el-header style="background: rgb(11, 23, 64)">
+      <el-header style="background: #228B22">
         <CommonHeader></CommonHeader>
       </el-header>
       <common-tab></common-tab>
@@ -29,6 +29,6 @@ export default {
 .body-main {
   background: rgb(231, 234, 237);
   padding: 10px;
-  background-image: url(../assets/bgimg.png);
+  background-image: url(../assets/bgimg1.png);
 }
 </style>

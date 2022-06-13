@@ -25,12 +25,12 @@
       </div>
     </el-card>
     <el-card shadow="never">
-      <el-table v-loading="loading" :data="tableData" max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
+      <el-table  v-loading="loading" :data="tableData" max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
         <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
-        <el-table-column prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
-        <el-table-column prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
-        <el-table-column prop="diseaseIntroduce" label="疾病简介"> </el-table-column>
-        <el-table-column label="疾病表现">
+        <el-table-column header-align="center" align="center" prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
+        <el-table-column header-align="center" align="center" prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
+        <el-table-column header-align="center" prop="diseaseIntroduce" label="疾病简介"> </el-table-column>
+        <el-table-column header-align="center" label="疾病表现">
           <template slot-scope="props">
             <el-tooltip class="item" effect="dark" placement="top">
               <div style="width: 440px; font-size: 16px" slot="content">{{ props.row.diseaseSymptom }}</div>
@@ -126,7 +126,7 @@ export default {
           this.total = res.data.browse.total
           this.$message.success("查询成功")
         }
-      } else if (this.searchInfo.part === '' && this.searchInfo.disease) {
+      } else if (this.searchInfo.part === '' && this.searchInfo.disease === '') {
         const { data: res } = await this.$http.get(
           `/dev2/disease-information/browseLike?diseaseChineseName=${this.searchInfo.name}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )

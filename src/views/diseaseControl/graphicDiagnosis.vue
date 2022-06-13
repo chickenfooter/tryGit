@@ -161,7 +161,7 @@ export default {
           this.total = res.data.diseasePictureNameVOPage.total
           this.$message.success("查询成功")
         }
-      } else if (this.searchInfo.citrusPartId === '' && this.searchInfo.disasterTypeId) {
+      } else if (this.searchInfo.citrusPartId === '' && this.searchInfo.disasterTypeId === '') {
         const { data: res } = await this.$http.get(
           `/dev2/disease-information/diseaseSelect?diseaseChineseName=${this.searchInfo.diseaseChineseName}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )

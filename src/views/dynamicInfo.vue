@@ -2,7 +2,7 @@
   <div v-infinite-scroll="load" class="infoDiv">
     <el-card shadow="never" class="body-card" v-loading="loading">
       <div class="newBox" v-for="(item, index) in newInfo" :key="index">
-        <img v-show="item.picUrl === ''" class="imgBox" :src="item.picUrl" alt="" />
+        <img v-show="item.picUrl != null" class="imgBox" :src="item.picUrl" alt="" />
         <div class="textBox" @click="openDetail(item.detailUrl, item.title)">
           <div class="title">{{ item.title }}</div>
           <p class="content">{{ item.introduction }}</p>

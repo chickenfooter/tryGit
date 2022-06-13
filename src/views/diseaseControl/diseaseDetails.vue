@@ -140,18 +140,6 @@
             </tr>
           </tbody>
         </table>
-        <!-- <div style="margin-bottom:15px">
-          <span class="dialog_span">使用说明：</span><span class="dialog_span1">{{ insecticideDetails.instruction }}</span>
-        </div>
-        <div style="margin-bottom:15px">
-          <span class="dialog_span">储存说明：</span><span class="dialog_span1">{{ insecticideDetails.attention }}</span>
-        </div>
-        <div style="margin-bottom:15px">
-          <span class="dialog_span">使用注意事项：</span><span class="dialog_span1">{{ insecticideDetails.emergencyTreatment }}</span>
-        </div>
-        <div style="margin-bottom:15px">
-          <span class="dialog_span">其他：</span><span class="dialog_span1">{{ insecticideDetails.remarks }}</span>
-        </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -415,5 +403,7 @@ export default {
 }
 .tdInfo {
   font-size: 16px;
+  text-align: left;
+  text-indent: 2em;
 }
 </style>
