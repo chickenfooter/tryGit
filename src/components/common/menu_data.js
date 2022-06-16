@@ -26,12 +26,6 @@ export default {
         icon: require('../../assets/img/environmentalPrediction.png')
       },
       {
-        path: '/scientificMedication',
-        name: 'scientificMedication',
-        label: '科学用药指导',
-        icon: require('../../assets/img/scientificMedication.png')
-      },
-      {
         path: '/diseaseControl',
         name: 'diseaseControl',
         label: '疾病防治',
@@ -62,6 +56,18 @@ export default {
             icon: require('../../assets/img/intelligentDiagnosis.png')
           }
         ]
+      },
+      {
+        path: '/scientificMedication',
+        name: 'scientificMedication',
+        label: '用药指导',
+        icon: require('../../assets/img/scientificMedication.png')
+      },
+      {
+        path: '/plantingTechnique',
+        name: 'plantingTechnique',
+        label: '农技学堂',
+        icon: require('../../assets/img/plantingTechnique.png')
       },
       {
         path: '/deviceManagment',

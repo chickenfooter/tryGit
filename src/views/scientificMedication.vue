@@ -20,7 +20,11 @@
       <el-dialog
       title="详细信息"
       :visible.sync="dialogVisible"
+<<<<<<< HEAD
       width="60%"
+=======
+      width="45%"
+>>>>>>> be21fd4648b4629552058f5657293f09932c71b0
       :before-close="handleClose"
     >
       <table class="tableInfo" :model="addForm" id="printTest">

@@ -147,35 +147,64 @@ export default {
     },
     // 查询疾病
     async searchDiseaseSelect() {
-      if (this.searchInfo.disasterTypeId === '' && this.searchInfo.citrusPartId != '') {
-        const { data: res } = await this.$http.get(
-          `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
-        )
+       if (this.searchInfo.diseaseChineseName === '' && this.searchInfo.citrusPartId === '') {
+        const { data: res } = await this.$http.get(`/dev2/disease-information/diseaseSelect?disasterTypeId=${this.searchInfo.disasterTypeId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
         if (res.code === 0) {
-          this.$message.success('查询成功')
           this.graphicInfo = res.data.diseasePictureNameVOPage.records
           this.total = res.data.diseasePictureNameVOPage.total
-          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+          this.$message.success("查询成功")
         }
-      } else if (this.searchInfo.citrusPartId === '' && this.searchInfo.disasterTypeId != '') {
-        const { data: res } = await this.$http.get(
-          `/dev2/disease-information/diseaseSelect?disasterTypeId=${this.searchInfo.disasterTypeId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
-        )
+      } else if (this.searchInfo.diseaseChineseName === '' && this.searchInfo.disasterTypeId === '') {
+        const { data: res } = await this.$http.get(`/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
         if (res.code === 0) {
-          this.$message.success('查询成功')
           this.graphicInfo = res.data.diseasePictureNameVOPage.records
           this.total = res.data.diseasePictureNameVOPage.total
-          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+          this.$message.success("查询成功")
         }
-      } else {
+      } else if (this.searchInfo.citrusPartId === '' && this.searchInfo.disasterTypeId === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?diseaseChineseName=${this.searchInfo.diseaseChineseName}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.diseaseChineseName === '') {
         const { data: res } = await this.$http.get(
           `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&disasterTypeId=${this.searchInfo.disasterTypeId}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
         )
         if (res.code === 0) {
-          this.$message.success('查询成功')
           this.graphicInfo = res.data.diseasePictureNameVOPage.records
           this.total = res.data.diseasePictureNameVOPage.total
-          this, (this.length = Math.ceil(this.graphicInfo.length / 3))
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.citrusPartId === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?disasterTypeId=${this.searchInfo.disasterTypeId}&diseaseChineseName=${this.searchInfo.diseaseChineseName}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this.$message.success("查询成功")
+        }
+      } else if (this.searchInfo.disasterTypeId === '') {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&diseaseChineseName=${this.searchInfo.diseaseChineseName}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this.$message.success("查询成功")
+        }
+      } else {
+        const { data: res } = await this.$http.get(
+          `/dev2/disease-information/diseaseSelect?citrusPartId=${this.searchInfo.citrusPartId}&disasterTypeId=${this.searchInfo.disasterTypeId}&diseaseChineseName=${this.searchInfo.diseaseChineseName}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`
+        )
+        if (res.code === 0) {
+          this.graphicInfo = res.data.diseasePictureNameVOPage.records
+          this.total = res.data.diseasePictureNameVOPage.total
+          this.$message.success("查询成功")
         }
       }
     },

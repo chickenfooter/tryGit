@@ -24,6 +24,10 @@ import DiseaseDetails from '../views/diseaseControl/diseaseDetails.vue'
 
 // 导入柑橘功效
 import CitrusEfficacy from '../views/citrusEfficacy.vue'
+
+// 导入种植技术
+import PlantingTechnique from '../views/plantingTechnique/plantingTechnique.vue'
+import TechnologyDetails from '../views/plantingTechnique/technologyDetails.vue'
  
 /***
  * 在升级了Vue-Router版本到到3.1.0及以上之后，页面在跳转路由控制台会报Uncaught (in promise)的问题，
@@ -114,6 +118,16 @@ const routes = [
         path: '/citrusEfficacy',
         name: 'citrusEfficacy',
         component: CitrusEfficacy
+      },
+      {
+        path: '/plantingTechnique',
+        name: 'plantingTechnique',
+        component: PlantingTechnique
+      },
+      {
+        path: '/technologyDetails',
+        name: 'technologyDetails',
+        component: TechnologyDetails
       }
     ]
   },
