@@ -12,7 +12,7 @@
         </div>
       </div>
     </el-card>
-         <el-table  :data="picAndInfo" max-height="510" border style="width: 100%; cursor: pointer" @row-click="dialogVisible = true" >
+         <el-table  :data="picAndInfo" max-height="510" border style="width: 100%; cursor: pointer" @row-click="toDetails" >
         <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
         <el-table-column prop="diseaseName" label="疾病名称" > </el-table-column>
         <el-table-column prop="type" label="杀虫剂" > </el-table-column>
@@ -20,12 +20,22 @@
       <el-dialog
       title="详细信息"
       :visible.sync="dialogVisible"
-      width="27%"
+      width="60%"
       :before-close="handleClose"
     >
       <table class="tableInfo" :model="addForm" id="printTest">
           <thead></thead>
           <tbody>
+            <tr>
+              <td class="tdName">英文名</td>
+              <br>
+              <td class="tdInfo">{{ addForm.englishName }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">杀虫剂名称</td>
+              <br>
+              <td class="tdInfo">{{ addForm.insecticideName }}</td>
+            </tr>
             <tr>
               <td class="tdName">活性成分</td>
               <br>
@@ -37,24 +47,14 @@
               <td class="tdInfo">{{ addForm.certificateNumber }}</td>
             </tr>
             <tr>
-              <td class="tdName">紧急处理</td>
-              <br>
-              <td class="tdInfo">{{ addForm.emergencyTreatment }}</td>
-            </tr>
-            <tr>
-              <td class="tdName">英文名</td>
-              <br>
-              <td class="tdInfo">{{ addForm.Aldicarb }}</td>
-            </tr>
-            <tr>
-              <td class="tdName">杀虫剂名称</td>
-              <br>
-              <td class="tdInfo">{{ addForm.insecticideName }}</td>
-            </tr>
-            <tr>
               <td class="tdName">介绍</td>
               <br>
               <td class="tdInfo">{{ addForm.instruction }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">紧急处理</td>
+              <br>
+              <td class="tdInfo">{{ addForm.emergencyTreatment }}</td>
             </tr>
             <tr>
               <td class="tdName">备注</td>
@@ -107,6 +107,12 @@ export default {
   },
 
   methods:{
+    toDetails(row) {
+      // this.dialogVisible = true
+      console.log(row,"列")
+      this.addForm = row;
+      this.dialogVisible = true
+    },
      handleClose(done) {
         this.$confirm('确认关闭？')
           .then((_) => {
@@ -131,6 +137,7 @@ export default {
       if (res.code === 0) {
         this.picAndInfo = res.data.insecticideInfoVos
         this.addForm = res.data.insecticideInfoVos[0]
+
       }
       console.log(this.picAndInfo)
       console.log(this.addForm)
