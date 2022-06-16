@@ -12,7 +12,7 @@
         </div>
       </div>
     </el-card>
-         <el-table  :data="picAndInfo" max-height="510" border style="width: 100%; cursor: pointer" @row-click="toDetails" >
+         <el-table  :data="picAndInfo" max-height="560" border style="width: 100%; cursor: pointer" @row-click="toDetails" >
         <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
         <el-table-column prop="diseaseName" label="疾病名称" > </el-table-column>
         <el-table-column prop="type" label="杀虫剂" > </el-table-column>
@@ -20,12 +20,6 @@
       <el-dialog
       title="详细信息"
       :visible.sync="dialogVisible"
-<<<<<<< HEAD
-      width="60%"
-=======
-      width="45%"
->>>>>>> be21fd4648b4629552058f5657293f09932c71b0
-      :before-close="handleClose"
     >
       <table class="tableInfo" :model="addForm" id="printTest">
           <thead></thead>
@@ -59,6 +53,11 @@
               <td class="tdName">紧急处理</td>
               <br>
               <td class="tdInfo">{{ addForm.emergencyTreatment }}</td>
+            </tr>
+            <tr>
+              <td class="tdName">注意事项</td>
+              <br>
+              <td class="tdInfo">{{ addForm.attention }}</td>
             </tr>
             <tr>
               <td class="tdName">备注</td>
