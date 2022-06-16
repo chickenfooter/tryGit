@@ -25,7 +25,7 @@
       </div>
     </el-card>
     <el-card shadow="never">
-      <el-table  v-loading="loading" :data="tableData" max-height="510" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
+      <el-table  v-loading="loading" :data="tableData" min-height="400" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
         <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
         <el-table-column header-align="center" align="center" prop="diseaseChineseName" label="疾病名称" width="140"> </el-table-column>
         <el-table-column header-align="center" align="center" prop="disasterTypeName" label="疾病类型" width="120"> </el-table-column>
@@ -43,7 +43,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pageInfo.pagenum"
-        :page-sizes="[10, 14, 16, 20]"
+        :page-sizes="[7, 10, 14, 16]"
         :page-size="pageInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -61,7 +61,7 @@ export default {
         // 当前页码
         pagenum: 1,
         // 每页显示条数
-        pagesize: 10,
+        pagesize: 7,
       },
       total: 10,
       flag: true,
