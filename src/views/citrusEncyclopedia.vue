@@ -1,27 +1,43 @@
 <template>
-    <div>
-      <div class="tabsBox">
-        <!-- <div class="tabsName">{{ tabsName[activeName] }}</div> -->
-      <el-card shadow="never" style="margin-bottom: 30px;height:500px;">
-      <el-tabs  style="height: 200px;" v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="柑橘特征" name="fea" style="font-weight:bold"><p class="mes2">{{data1.features}}</p></el-tab-pane>
-    <el-tab-pane label="生长环境" name="env" class="lab"><p class="mes2">{{data1.environment}}</p></el-tab-pane>
-    <el-tab-pane label="柑橘分布" name="dis"><p class="mes2">{{data1.distribution}}</p></el-tab-pane>
-    <el-tab-pane label="柑橘分类" name="cha"><p class="mes2">{{data1.character}}</p></el-tab-pane>
-     <el-tab-pane label="柑橘存储" name="sto"><p class="mes2">{{data1.values}}</p></el-tab-pane>
-       <el-tab-pane label="柑橘价值" name="val"><p class="mes2">{{data1.cultivate}}</p></el-tab-pane>
-         <el-tab-pane label="柑橘培养" name="cult"><p class="mes2">{{data1.storage}}</p></el-tab-pane>
-         <el-tab-pane label="柑橘文化" name="cul"><p class="mes2">{{data1.culture}}</p></el-tab-pane>
-  </el-tabs>
-    </el-card>
-     </div>
+  <div>
+    <div class="tabsBox">
+      <!-- <div class="tabsName">{{ tabsName[activeName] }}</div> -->
+      <el-card shadow="never" style="margin-bottom: 30px; height: 500px">
+        <el-tabs  style="height: 200px" v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="柑橘特征" name="fea" style="font-weight: bold"
+            ><p class="mes2">{{ data1.features }}</p></el-tab-pane
+          >
+          <el-tab-pane label="生长环境" name="env" class="lab"
+            ><p class="mes2">{{ data1.environment }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘分布" name="dis"
+            ><p class="mes2">{{ data1.distribution }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘分类" name="cha"
+            ><p class="mes2">{{ data1.character }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘存储" name="sto"
+            ><p class="mes2">{{ data1.values }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘价值" name="val"
+            ><p class="mes2">{{ data1.cultivate }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘培养" name="cult"
+            ><p class="mes2">{{ data1.storage }}</p></el-tab-pane
+          >
+          <el-tab-pane label="柑橘文化" name="cul"
+            ><p class="mes2">{{ data1.culture }}</p></el-tab-pane
+          >
+        </el-tabs>
+      </el-card>
     </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-       data1: {},
+      data1: {},
       activeName: 'fea',
       tabsName: {
         fea: '柑橘特征',
@@ -31,7 +47,7 @@ export default {
         sto: '柑橘存储',
         cult: '柑橘培养',
         cul: '柑橘文化',
-        val:'柑橘价值'
+        val: '柑橘价值',
       },
     }
   },
@@ -60,12 +76,12 @@ export default {
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
-        .then(_ => {
+        .then((_) => {
           done()
         })
-        .catch(_ => {})
-    }
-  }
+        .catch((_) => {})
+    },
+  },
 }
 </script>
 <style scoped>
@@ -130,8 +146,8 @@ export default {
   margin-bottom: 10px;
   border-bottom: dashed 1px #e5e5e5;
 }
-lab {
-  font-weight: bold
+.lab {
+  font-weight: bold;
 }
 .mes {
   display: flex;
@@ -146,6 +162,7 @@ lab {
   font-weight: bold;
   font-size: 20px;
   color: coral;
+  text-indent: 2em;
 }
 .footer {
   height: 10px;
