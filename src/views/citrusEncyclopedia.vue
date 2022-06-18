@@ -3,7 +3,7 @@
     <div class="tabsBox">
       <!-- <div class="tabsName">{{ tabsName[activeName] }}</div> -->
       <el-card shadow="never" style="margin-bottom: 30px; height: 500px">
-        <el-tabs  style="height: 200px" v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tabs style="height: 200px" v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="柑橘特征" name="fea" style="font-weight: bold"
             ><p class="mes2">{{ data1.features }}</p></el-tab-pane
           >
