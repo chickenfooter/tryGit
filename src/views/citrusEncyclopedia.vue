@@ -146,6 +146,7 @@ lab {
   font-weight: bold;
   font-size: 20px;
   color: coral;
+  text-indent: 2em
 }
 .footer {
   height: 10px;

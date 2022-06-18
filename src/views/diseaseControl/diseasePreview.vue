@@ -96,7 +96,7 @@ export default {
   methods: {
     // 分页获取疾病数据
     async getDiseaseInfo() {
-      const { data: res } = await this.$http.get(`/dev2/disease-information/browse?pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
+      const { data: res } = await this.$http.get(`/dev2/disease-information/browse/${this.pageInfo.pagenum}/${this.pageInfo.pagesize}`)
       console.log(res)
       if (res.code === 0) {
         this.tableData = res.data.browse.records
@@ -111,7 +111,7 @@ export default {
     },
     // 查询
     async toSearch() {
-      console.log(this.searchInfo, '查询数据')
+      // console.log(this.searchInfo, '查询数据')
       if (this.searchInfo.name === '' && this.searchInfo.part === '') {
         const { data: res } = await this.$http.get(`/dev2/disease-information/browseLike?disasterTypeId=${this.searchInfo.disease}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
         if (res.code === 0) {
