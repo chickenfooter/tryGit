@@ -3,7 +3,7 @@
     <el-card shadow="never" style="margin-bottom: 15px">
       <div class="search-card">
         <div class="search-input">
-          <div style="flex-shrink: 0">疾病名称：</div>
+          <div style="flex-shrink: 0">药剂名称：</div>
           <el-input size="small" style="margin-left: 10px" v-model="searchInfo.name" placeholder="请输入内容"></el-input>
         </div>
         <div>

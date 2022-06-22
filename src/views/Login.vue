@@ -7,13 +7,13 @@
         <el-tab-pane label="登录" name="login">
           <el-form :model="loginForm" ref="loginFormRef" :rules="loginFormRules" class="login-form">
             <el-form-item prop="username" class="login-form-item1">
-              <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名(admin)" @input="change($event)"></el-input>
+              <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名" @input="change($event)"></el-input>
             </el-form-item>
             <el-form-item prop="password" class="login-form-item2">
               <el-input
                 v-model="loginForm.password"
                 prefix-icon="el-icon-unlock"
-                placeholder="请输入密码(123456)"
+                placeholder="请输入密码"
                 @input="change($event)"
                 type="password"
                 @keyup.enter.native="handleLoginForm()"

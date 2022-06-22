@@ -10,7 +10,7 @@
           action="http://120.77.156.205:8804/dev1/test/intelligent_diagnosis"
           name="pic"
           :limit="1"
-           :on-exceed="handleExceed"
+          :on-exceed="handleExceed"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :auto-upload="false"
@@ -22,9 +22,11 @@
         </el-upload>
         <el-button class="jugdgeBtn" style="margin-left: 10px" size="small" type="success" @click="submitUpload">智能诊断</el-button>
       </div>
-      <div  v-loading="loading" class="diseaseName">
-        <div class="title">疾病名称</div>
-        <span class="name" v-for="(item,index) in diseaseName" :key="index">{{item}}</span>
+      <div v-loading="loading" class="diseaseName">
+        <div class="title">诊断结果</div>
+        <img class="judgeImg" v-show="flag != ''" :src="resData.imgUrl" alt="" />
+        <br />
+        <span class="name" v-for="(item, index) in diseaseName" :key="index">相似度：{{ resData.scores[index] }}<span style="width:2px"></span>名称：{{ item }}<br /></span>
       </div>
     </el-card>
     <el-dialog :visible.sync="dialogVisible">
@@ -38,32 +40,40 @@ export default {
   data() {
     return {
       dialogImageUrl: '',
+      flag:'',
       dialogVisible: false,
       diseaseName: [],
-      loading: false
+      resData: {},
+      loading: false,
     }
   },
   methods: {
     changefn(file) {
-        console.log(file,"123")
-        this.dialogImageUrl = file.url
+      console.log(file, '123')
+      this.dialogImageUrl = file.url
     },
     progressfn(event, file) {
-        console.log(event, file,"图片")
+      console.log(event, file, '图片')
     },
     successfn(response) {
-        console.log(response,"诊断")
-        if(response.code === 200) {
-            this.diseaseName = response.data.classes
-            this.$message.success("诊断成功！")
-            this.loading = false
-        }
+      console.log(response, '诊断')
+      if (response.code === 200) {
+        this.resData = response.data
+        this.diseaseName = response.data.classes
+        this.flag = 1
+        this.$message.success('诊断成功！')
+        console.log(this.resData)
+        this.loading = false
+      } else if (response.code === 1) {
+        this.$message.error(response.message + '请稍后重试')
+        this.loading = false
+      }
     },
-      handleExceed() {
-        this.$message.warning(`当前限制选择 1 张图片`);
-      },
+    handleExceed() {
+      this.$message.warning(`当前限制选择 1 张图片`)
+    },
     submitUpload() {
-        this.loading = true
+      this.loading = true
       this.$refs.upload.submit()
     },
     handleRemove(file) {
@@ -97,8 +107,12 @@ export default {
   margin-left: 1%;
 }
 .name {
-    margin-top: 20px;
-    margin-right: 10px;
-    font-size: 15px;
+  margin-top: 20px;
+  margin-right: 10px;
+  font-size: 15px;
+}
+.judgeImg {
+  width: 150px;
+  height: 150px;
 }
 </style>

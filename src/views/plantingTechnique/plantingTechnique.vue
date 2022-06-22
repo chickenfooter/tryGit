@@ -29,9 +29,9 @@
                     <!-- 照片 -->
                     <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
                     <div class="title">
-                      <div class="name">刘双印</div>
-                      <p>擅长领域：教授，博士生导师，博士</p>
-                      <p>信息科学与技术学院院长，仲恺智慧农业创新研究院执行院长</p>
+                      <div class="name">曹亮</div>
+                      <p>擅长领域：工程师，硕士生导师</p>
+                      <p></p>
                     </div>
                     <!-- 简介 -->
                   </div>
@@ -46,9 +46,9 @@
                     <!-- 照片 -->
                     <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
                     <div class="title">
-                      <div class="name">刘双印</div>
-                      <p>擅长领域：教授，博士生导师，博士</p>
-                      <p>信息科学与技术学院院长，仲恺智慧农业创新研究院执行院长</p>
+                      <div class="name">刘同来</div>
+                      <p>擅长领域：副教授，硕士生导师，博士</p>
+                      <p></p>
                     </div>
                     <!-- 简介 -->
                   </div>
