@@ -5,6 +5,7 @@
         <!-- 左边选择框 -->
         <div class="chooseBox">
           <div>预测数据选</div>
+          <el-button>测试</el-button>
         </div>
         <!-- 右边展示 -->
         <div class="resBox">
@@ -16,18 +17,23 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {}
+  },
+  methods: {},
+}
 </script>
 
 <style scoped>
 .box {
-    display: flex;
+  display: flex;
 }
 .chooseBox {
-    width: 30%;
+  width: 30%;
 }
 .resBox {
-    margin-left: 1%;
-    width: 69%;
+  margin-left: 1%;
+  width: 69%;
 }
 </style>

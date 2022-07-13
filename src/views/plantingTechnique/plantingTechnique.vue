@@ -10,11 +10,11 @@
                 <div>
                   <div class="header">
                     <!-- 照片 -->
-                    <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                    <!-- <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar> -->
                     <div class="title">
-                      <div class="name">刘双印</div>
-                      <p>擅长领域：教授，博士生导师，博士</p>
-                      <p>信息科学与技术学院院长，仲恺智慧农业创新研究院执行院长</p>
+                      <div class="name">林进添</div>
+                      <p>简介：博士，教授，博士生导师，广东省优秀教师，仲恺农业工程学院教授。</p>
+                      <p>研究领域：害虫防控与抗药性治理的教学与科研。</p>
                     </div>
                     <!-- 简介 -->
                   </div>
@@ -27,11 +27,11 @@
                 <div>
                   <div class="header">
                     <!-- 照片 -->
-                    <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                    <!-- <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar> -->
                     <div class="title">
-                      <div class="name">曹亮</div>
-                      <p>擅长领域：工程师，硕士生导师</p>
-                      <p></p>
+                      <div class="name">黄江华</div>
+                     <p>简介：博士、教授、硕士生导师，广东省“千百十工程”省级培养对象，仲恺农业工程学院教授。</p>
+                      <p>研究领域：植物病理学、植物保护学以及入侵生物学的教学与科研。</p>
                     </div>
                     <!-- 简介 -->
                   </div>
@@ -44,11 +44,11 @@
                 <div>
                   <div class="header">
                     <!-- 照片 -->
-                    <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                    <!-- <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar> -->
                     <div class="title">
-                      <div class="name">刘同来</div>
-                      <p>擅长领域：副教授，硕士生导师，博士</p>
-                      <p></p>
+                      <div class="name">宾淑英</div>
+                      <p>简介：教授、硕士导师，仲恺农业工程学院教授。</p>
+                      <p>研究领域：农业昆虫与害虫防治、农药学。</p>
                     </div>
                     <!-- 简介 -->
                   </div>
@@ -58,7 +58,6 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="问答" name="third">问答</el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -99,6 +98,7 @@ export default {
 }
 .title {
   margin-left: 10px;
+  min-height: 90px;
 }
 .name {
   font-size: 1.3em;

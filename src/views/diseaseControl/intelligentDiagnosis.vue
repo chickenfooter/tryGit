@@ -26,7 +26,9 @@
         <div class="title">诊断结果</div>
         <img class="judgeImg" v-show="flag != ''" :src="resData.imgUrl" alt="" />
         <br />
-        <span class="name" v-for="(item, index) in diseaseName" :key="index">相似度：{{ resData.scores[index] }}<span style="width:2px"></span>名称：{{ item }}<br /></span>
+        <span class="name" v-for="(item, index) in diseaseName" :key="index"
+          >名称：<span class="nameSpan" @click="toDetails(item)">{{ item }} </span> 相似度：{{ resData.scores[index] * 100 }}%<br
+        /></span>
       </div>
     </el-card>
     <el-dialog :visible.sync="dialogVisible">
@@ -40,11 +42,12 @@ export default {
   data() {
     return {
       dialogImageUrl: '',
-      flag:'',
+      flag: '',
       dialogVisible: false,
       diseaseName: [],
       resData: {},
       loading: false,
+      nameId: '',
     }
   },
   methods: {
@@ -67,6 +70,15 @@ export default {
       } else if (response.code === 1) {
         this.$message.error(response.message + '请稍后重试')
         this.loading = false
+      }
+    },
+    // 根据name查询id，跳转到详情页
+    async toDetails(e) {
+      console.log(e, 'name')
+      const { data: res } = await this.$http.get(`/dev1/test/nameToID/{name}?name=${e}`)
+      if (res.code === 0) {
+        this.nameId = res.data.diseaseId
+        this.$router.push({ path: '/diseaseDetails', query: { id: this.nameId } })
       }
     },
     handleExceed() {
@@ -114,5 +126,14 @@ export default {
 .judgeImg {
   width: 150px;
   height: 150px;
+}
+.nameSpan {
+  margin-right: 10px;
+  color: rgb(109, 96, 96);
+  cursor: pointer;
+  /* color: rgb(34, 139, 34); */
+}
+.nameSpan:hover {
+  color: rgb(34, 139, 34);
 }
 </style>
