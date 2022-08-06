@@ -72,7 +72,7 @@ export default {
       {
         path: '/deviceManagment',
         name: 'deviceManagment',
-        label: '设备管理',
+        label: '视频监控',
         icon: require('../../assets/img/deviceManagment.png')
       },
     ]

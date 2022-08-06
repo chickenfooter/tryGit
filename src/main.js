@@ -13,7 +13,19 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 // 导出表格
 import JsonExcel from 'vue-json-excel'
+// 全局配置视频播放插件
 
+import VideoPlayer from 'vue-video-player';
+import 'video.js/dist/video-js.css';
+import 'vue-video-player/src/custom-theme.css';
+import hls from 'videojs-contrib-hls';
+
+Vue.use(hls);
+Vue.use(VideoPlayer);
+// 视频播放
+import vueMiniPlayer from 'vue-mini-player'
+import 'vue-mini-player/lib/vue-mini-player.css'
+Vue.use(vueMiniPlayer)
 
 Vue.component('downloadExcel', JsonExcel)
 Vue.use(ViewUI);

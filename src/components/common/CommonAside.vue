@@ -44,13 +44,13 @@ export default {
     // 判断导航栏是否有子节点
     noChildren() {
       // this.asideMenu.filter(item => console.log(item,"导航"))
-      return this.asideMenu.filter(item => !item.children&&item.label != "设备管理"&&item.label != "用药指导" && item.label != "种植技术")
+      return this.asideMenu.filter(item => !item.children&&item.label != "视频监控"&&item.label != "用药指导" && item.label != "种植技术")
     },
     hasChildren() {
       return this.asideMenu.filter(item => item.children)
     },
     lastChildren() {
-      return this.asideMenu.filter(item => item.label === "设备管理"||item.label === "用药指导" || item.label === "种植技术")
+      return this.asideMenu.filter(item => item.label === "视频监控"||item.label === "用药指导" || item.label === "种植技术")
     },
     isCollapse() {
       return this.$store.state.menu.isCollapse

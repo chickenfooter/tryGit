@@ -28,7 +28,7 @@ import CitrusEfficacy from '../views/citrusEfficacy.vue'
 // 导入种植技术
 import PlantingTechnique from '../views/plantingTechnique/plantingTechnique.vue'
 import TechnologyDetails from '../views/plantingTechnique/technologyDetails.vue'
- 
+
 /***
  * 在升级了Vue-Router版本到到3.1.0及以上之后，页面在跳转路由控制台会报Uncaught (in promise)的问题，
  * 在3.1.0版本里面新增功能：push和replace方法会返回一个promise, 你可能在控制台看到未捕获的异常。
