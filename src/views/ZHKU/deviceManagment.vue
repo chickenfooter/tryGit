@@ -1,37 +1,32 @@
 <template>
-<div>
-   <video-player
-          ref="videoPlayer"
-          class="video-player vjs-custom-skin"
-          :playsinline="true"
-          :options="playerOptions"
-        />
-        <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
-    <el-tab-pane label="设备名" name="first">DS-2CD2T25FD-I5SGLE(E52412209)</el-tab-pane>
-    <el-tab-pane label="序列号" name="second">E52412209</el-tab-pane>
-    <el-tab-pane label="当前版本" name="third">V5.5.88 build 200610</el-tab-pane>
-    <el-tab-pane label="最新版本" name="fourth">V5.5.88 build 200610</el-tab-pane>
-  </el-tabs>
-</div>
+  <div>
+    <video-player ref="videoPlayer" class="video-player vjs-custom-skin" :playsinline="true" :options="playerOptions" />
+    <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
+      <el-tab-pane label="设备名" name="first">DS-2CD2T25FD-I5SGLE(E52412209)</el-tab-pane>
+      <el-tab-pane label="序列号" name="second">E52412209</el-tab-pane>
+      <el-tab-pane label="当前版本" name="third">V5.5.88 build 200610</el-tab-pane>
+      <el-tab-pane label="最新版本" name="fourth">V5.5.88 build 200610</el-tab-pane>
+    </el-tabs>
+  </div>
   <!-- <vueMiniPlayer ref="vueMiniPlayer" :video="video" :mutex="true" @fullscreen="handleFullscreen" /> -->
 </template>
 <script>
-  export default {
-    data () {
-      return {
-           activeName: 'second',
-        video: {
-            url:'https://video.pearvideo.com/mp4/short/20170616/cont-1094945-10544594-hd.mp4',
-            // url: 'https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f8231991&userId=17&ext=.mp4  autoplay muted',
-            cover: 'https://i.loli.net/2019/06/06/5cf8c5d9c57b510947.png',
-            muted: false,
-            loop: false,
-            preload: 'auto',
-            poster: '',
-            volume: 1,
-            autoplay: false
-        },
-         // 监控视频配置
+export default {
+  data() {
+    return {
+      activeName: 'second',
+      video: {
+        url: 'http://hls01open.ys7.com/openlive/7c946db5849549d6a5e128015a2dc8c9.m3u8',
+        // url: 'https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f8231991&userId=17&ext=.mp4  autoplay muted',
+        cover: 'https://i.loli.net/2019/06/06/5cf8c5d9c57b510947.png',
+        muted: false,
+        loop: false,
+        preload: 'auto',
+        poster: '',
+        volume: 1,
+        autoplay: false,
+      },
+      // 监控视频配置
       playerOptions: {
         // playbackRates: [0.5, 1.0, 1.5, 2.0], //可选择的播放速度
         autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -44,8 +39,8 @@
         sources: [
           {
             type: 'application/x-mpegURL', // 这里的种类支持很多种：基本视频格式、直播、流媒体等
-            src: 'http://hls01open.ys7.com/openlive/7c946db5849549d6a5e128015a2dc8c9.m3u8' //url地址
-          }
+            src: 'http://hls01open.ys7.com/openlive/7c946db5849549d6a5e128015a2dc8c9.m3u8', //url地址
+          },
         ],
         poster: '', //你的封面地址
         // width: document.documentElement.clientWidth,
@@ -54,34 +49,32 @@
           timeDivider: true, //当前时间和持续时间的分隔符
           durationDisplay: true, //显示持续时间
           remainingTimeDisplay: false, //是否显示剩余时间功能
-          fullscreenToggle: true //全屏按钮
-        }
+          fullscreenToggle: true, //全屏按钮
+        },
       },
-      }
-    },
-    computed(){
-      // $video(){
-      //   return this.$refs.vueMiniPlayer.$video;
-      // }
-    },
-    methods:{
-        handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      handleFullscreen(){
-
-      }
     }
-  }
+  },
+  computed() {
+    // $video(){
+    //   return this.$refs.vueMiniPlayer.$video;
+    // }
+  },
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event)
+    },
+    handleFullscreen() {},
+  },
+}
 </script>
 <style>
 .el-tabs__item:hover {
   color: orange;
-  background-color: orange ;
+  background-color: orange;
 }
 .el-tabs__item.is-active {
-    color: orange;
-    background-color: orange;
+  color: orange;
+  background-color: orange;
 }
 /* video-player{
    width: 100%;
@@ -97,5 +90,4 @@ video-player:focus {
 .vjs-poster {
   background-size: cover;
 }
-
 </style>

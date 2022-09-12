@@ -19,13 +19,32 @@
           </el-select>
         </div>
         <div>
+          <el-button size="small" @click="addSearchInfo()">添加</el-button>
+          <el-drawer title="我嵌套了 Form !" :before-close="handleClose" :visible.sync="dialog" direction="ltr" custom-class="demo-drawer" ref="drawer">
+            <div class="demo-drawer__content">
+              <!-- 嵌套的表单 -->
+              <el-form :model="form">
+                <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+                  <div v-for="item in formLabelAlign">
+                    <el-form-item :label="item.title">
+                      <el-input v-model="formLabelAlign.citruspartid"></el-input>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </el-form>
+              <div class="demo-drawer__footer">
+                <el-button @click="cancelForm">取 消</el-button>
+                <el-button type="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+              </div>
+            </div>
+          </el-drawer>
           <el-button size="small" @click="newSearchInfo()">重置</el-button>
           <el-button type="search" size="small" @click="toSearch()">查询</el-button>
         </div>
       </div>
     </el-card>
     <el-card shadow="never">
-      <el-table  v-loading="loading" :data="tableData" min-height="400" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
+      <el-table v-loading="loading" :data="tableData" min-height="400" border style="width: 100%; cursor: pointer" @row-click="openedDetails">
         <!-- <el-table-column prop="date" label="序号" width="80"> </el-table-column> -->
         <el-table-column header-align="center" align="center" prop="diseaseChineseName" label="疾病名称" width="150"> </el-table-column>
         <el-table-column header-align="center" align="center" prop="disasterTypeName" label="疾病类型" width="150"> </el-table-column>
@@ -88,6 +107,32 @@ export default {
       },
       tableData: [],
       loading: true,
+      formLabelAlign: [
+        { title: '柑橘编号' },
+        { title: '疾病分类' },
+        { title: '名称' },
+        { title: '疾病介绍' },
+        { title: 'diseaseIntelligence' },
+        { title: '病原体' },
+        { title: '英文名' },
+        { title: '疾病症状' },
+        { title: '治疗方法' },
+        { title: '常用名/俗名' },
+      ],
+      form: {
+        diseasetypeid: '',
+        diseaseclass: '',
+        chinesename: '',
+        distribution: '',
+        diseaseintelligence: '',
+        pathogen: '',
+        englishname: '',
+        diseasesymptom: '',
+        diseasetreatment: '',
+        diseasetrivialname: '',
+      },
+      formLabelWidth: '80px',
+      timer: null,
     }
   },
   created() {
@@ -117,14 +162,14 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else if (this.searchInfo.name === '' && this.searchInfo.disease === '') {
         const { data: res } = await this.$http.get(`/dev2/disease-information/browseLike?citrusPartId=${this.searchInfo.part}&pageNum=${this.pageInfo.pagenum}&pageSize=${this.pageInfo.pagesize}`)
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else if (this.searchInfo.part === '' && this.searchInfo.disease === '') {
         const { data: res } = await this.$http.get(
@@ -133,7 +178,7 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else if (this.searchInfo.name === '') {
         const { data: res } = await this.$http.get(
@@ -142,7 +187,7 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else if (this.searchInfo.part === '') {
         const { data: res } = await this.$http.get(
@@ -151,7 +196,7 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else if (this.searchInfo.disease === '') {
         const { data: res } = await this.$http.get(
@@ -160,7 +205,7 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       } else {
         const { data: res } = await this.$http.get(
@@ -169,25 +214,54 @@ export default {
         if (res.code === 0) {
           this.tableData = res.data.browse.records
           this.total = res.data.browse.total
-          this.$message.success("查询成功")
+          this.$message.success('查询成功')
         }
       }
     },
     // 重置查询条件
     newSearchInfo() {
-      this.searchInfo.name = '',
-      this.searchInfo.part = '',
-      this.searchInfo.disease = ''
+      ;(this.searchInfo.name = ''), (this.searchInfo.part = ''), (this.searchInfo.disease = '')
+    },
+    // 添加疾病数据
+    async addSearchInfo() {
+      const { data: res } = await this.$http.post(`/dev2/disease-information/add`)
+      if (res.code === 0) {
+        //添加成功
+      } else {
+        //添加失败
+      }
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
-      this.pageInfo.pagesize = val;
+      this.pageInfo.pagesize = val
       this.getDiseaseInfo()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
-      this.pageInfo.pagenum = val;
+      this.pageInfo.pagenum = val
       this.getDiseaseInfo()
+    },
+    handleClose(done) {
+      if (this.loading) {
+        return
+      }
+      this.$confirm('确定要提交表单吗？')
+        .then((_) => {
+          this.loading = true
+          this.timer = setTimeout(() => {
+            done()
+            // 动画关闭需要一定的时间
+            setTimeout(() => {
+              this.loading = false
+            }, 400)
+          }, 2000)
+        })
+        .catch((_) => {})
+    },
+    cancelForm() {
+      this.loading = false
+      this.dialog = false
+      clearTimeout(this.timer)
     },
   },
 }

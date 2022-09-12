@@ -115,7 +115,7 @@ export default {
 }
 .diseaseName {
   float: right;
-  width: 58%;
+  width: 30%;
   margin-left: 1%;
 }
 .name {

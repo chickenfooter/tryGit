@@ -39,7 +39,7 @@ Vue.prototype.$http = axios
 axios.defaults.baseURL = 'http://120.77.156.205:8804'
 // axios.defaults.withCredentials = false
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8/x-www-form-urlencoded';
-
+// axios.defaults.withCredentials=true //携带cookie
 new Vue({
   router,
   store,

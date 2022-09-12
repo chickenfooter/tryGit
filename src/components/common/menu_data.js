@@ -20,12 +20,6 @@ export default {
         icon: require('../../assets/img/citrusEfficacy.png')
       },
       {
-        path: '/environmentalPrediction',
-        name: 'environmentalPrediction',
-        label: '环境预测',
-        icon: require('../../assets/img/environmentalPrediction.png')
-      },
-      {
         path: '/diseaseControl',
         name: 'diseaseControl',
         label: '疾病防治',
@@ -54,7 +48,7 @@ export default {
             name: 'intelligentDiagnosis',
             label: '智能诊断',
             icon: require('../../assets/img/intelligentDiagnosis.png')
-          }
+          },
         ]
       },
       {
@@ -70,11 +64,24 @@ export default {
         icon: require('../../assets/img/plantingTechnique.png')
       },
       {
-        path: '/deviceManagment',
-        name: 'deviceManagment',
-        label: '视频监控',
-        icon: require('../../assets/img/deviceManagment.png')
-      },
+        path:'ZHKU',
+        name:'ZHKU',
+        label:'柑橘基地(仲恺)',
+        icon:require('../../assets/img/deviceManagment.png'),
+        children:[
+          {
+            path: '/deviceManagment',
+            name: 'deviceManagment',
+            label: '视频监控',
+            icon: require('../../assets/img/deviceManagment.png')
+          },{
+            path: '/environmentalPrediction',
+            name: 'environmentalPrediction',
+            label: '环境预测',
+            icon: require('../../assets/img/environmentalPrediction.png'),
+          }
+        ]
+      }
     ]
   }
 }
