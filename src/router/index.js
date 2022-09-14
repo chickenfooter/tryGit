@@ -128,7 +128,7 @@ const routes = [
         path: '/technologyDetails',
         name: 'technologyDetails',
         component: TechnologyDetails
-      }
+      },
     ]
   },
 ]
