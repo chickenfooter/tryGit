@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div>
+    <div class="top_box">
       <div id="main1" class="common1"></div>
       <div id="main2" class="common1"></div>
       <div id="main3" class="common1"></div>
     </div>
-    <div>
+    <div class="bottom_box">
       <div id="main4" class="common1"></div>
       <div id="main5" class="common1"></div>
       <div id="main6" class="common1"></div>
@@ -184,6 +184,15 @@ export default {
 }
 </script>
 <style>
+.top_box {
+  display: flex;
+  justify-content: space-around;
+}
+.bottom_box {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-around;
+}
 .common1 {
   width: 500px;
   height: 400px;
