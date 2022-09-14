@@ -134,13 +134,13 @@ export default {
           // this.$router.push('/main')
           const status = res.data.user.status
 
-          if (status == '1') {
+          if (status == '2') {
             this.$message.success('登录成功！')
             console.log(status)
             window.localStorage.setItem('token', this.loginForm.password)
             this.$router.push('/main')
             return status
-          } else if (status == '0') {
+          } else if (status == '0' || status == '1') {
             this.$message.success('登录成功！')
             console.log(status)
             window.localStorage.setItem('token', this.loginForm.password)
