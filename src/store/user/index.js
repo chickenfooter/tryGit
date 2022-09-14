@@ -4,7 +4,8 @@ export default {
       loginuser: {
         username: '',
         password: ''
-      }
+      },
+      loginStatus: '',
     },
     getters: {
   
@@ -14,6 +15,9 @@ export default {
         state.loginuser.username = user.username
         state.loginuser.password = user.password
         console.log(user)
+      },
+      login_status(state, loginStatus_get) {
+        state.loginStatus = loginStatus_get;
       }
     },
     actions: {

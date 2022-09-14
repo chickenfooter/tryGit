@@ -10,14 +10,7 @@
               <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名" @input="change($event)"></el-input>
             </el-form-item>
             <el-form-item prop="password" class="login-form-item2">
-              <el-input
-                v-model="loginForm.password"
-                prefix-icon="el-icon-unlock"
-                placeholder="请输入密码"
-                @input="change($event)"
-                type="password"
-                @keyup.enter.native="handleLoginForm()"
-              ></el-input>
+              <el-input v-model="loginForm.password" prefix-icon="el-icon-unlock" placeholder="请输入密码" @input="change($event)" type="password" @keyup.enter.native="handleLoginForm()"></el-input>
             </el-form-item>
             <el-form-item class="login-form-item3">
               <el-button type="primary" @click="handleLoginForm">登录</el-button>
@@ -27,10 +20,9 @@
         </el-tab-pane>
         <el-tab-pane label="注册" name="register">
           <!-- 注册表单 -->
-         <el-form :model="registerForm" ref="registerFormRef" :rules="loginFormRules" class="login-form">
+          <el-form :model="registerForm" ref="registerFormRef" :rules="loginFormRules" class="login-form">
             <el-form-item prop="username" class="login-form-item1">
-              <el-input v-model="registerForm.username" prefix-icon="el-icon-s-custom"
-               placeholder="请输入用户名" @input="change($event)"></el-input>
+              <el-input v-model="registerForm.username" prefix-icon="el-icon-s-custom" placeholder="请输入用户名" @input="change($event)"></el-input>
             </el-form-item>
             <el-form-item prop="password" class="login-form-item2">
               <el-input
@@ -39,7 +31,7 @@
                 placeholder="请输入密码"
                 @input="change($event)"
                 type="password"
-                 @keyup.enter.native="handleRegisterForm()"
+                @keyup.enter.native="handleRegisterForm()"
               ></el-input>
             </el-form-item>
             <el-form-item class="login-form-item3">
@@ -59,7 +51,7 @@ export default {
       // 登录表单数据对象
       loginForm: {
         username: '',
-        password: ''
+        password: '',
       },
       // 注册表单数据对象
       registerForm: {
@@ -72,21 +64,35 @@ export default {
         phone: '',
         realName: '',
         status: 0,
-        username: ''
+        username: '',
       },
       // 注册表单的校验对象
       registerFormRules: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }]
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        ],
       },
       // 登录表单的校验对象
       loginFormRules: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }]
-      }
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 2, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        ],
+      },
     }
   },
-
+  props: {
+    status,
+  },
   methods: {
     // 多层嵌套无法输入解决方法
     change(e) {
@@ -98,7 +104,7 @@ export default {
     },
     // 注册方法
     async handleRegisterForm() {
-      this.$refs.registerFormRef.validate(async valid => {
+      this.$refs.registerFormRef.validate(async (valid) => {
         // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.post(`/web/user/register`, this.registerForm)
@@ -114,16 +120,38 @@ export default {
     },
     // 登录方法
     async handleLoginForm() {
-      this.$refs.loginFormRef.validate(async valid => {
+      this.$refs.loginFormRef.validate(async (valid) => {
         // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.post(`/web/user/login`, this.loginForm)
         if (res.code === 0) {
-          this.$message.success('登录成功！')
+          //登陆成功
+
+          console.log(res)
+          console.log(res.data.user.status) //成功打印
+
+          // window.localStorage.setItem('token', this.loginForm.password)
+          // this.$router.push('/main')
+          const status = res.data.user.status
+
+          if (status == '2') {
+            this.$message.success('登录成功！')
+            console.log(status)
+            window.localStorage.setItem('token', this.loginForm.password)
+            window.localStorage.setItem('loginStatus',status)
+            this.$router.push('/main')
+            return status
+          } else if (status == '0' || status == '1') {
+            this.$message.success('登录成功！')
+            console.log(status)
+             window.localStorage.setItem('loginStatus',status)
+            window.localStorage.setItem('token', this.loginForm.password)
+            this.$router.push('/main')
+            return status
+          }
           // localStorage.setItem('userForm', JSON.stringify(res.data))
-          window.localStorage.setItem('token', this.loginForm.password)
-          this.$router.push('/main')
         } else {
+          //登陆失败
           this.$message.error('密码或账号错误！')
         }
       })
@@ -138,8 +166,8 @@ export default {
       //   this.$store.commit('user/save_login', this.loginForm)
       //   this.$router.push('/main')
       // })
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
