@@ -19,7 +19,7 @@
           </el-select>
         </div>
         <div>
-          <el-button size="small" @click="addSearchInfo()">添加</el-button>
+          <el-button v-if="loginStatus == '2'" size="small" @click="addSearchInfo()">添加</el-button>
           <el-drawer title="我嵌套了 Form !" :before-close="handleClose" :visible.sync="dialog" direction="ltr" custom-class="demo-drawer" ref="drawer">
             <div class="demo-drawer__content">
               <!-- 嵌套的表单 -->
@@ -57,6 +57,20 @@
             </el-tooltip>
           </template>
         </el-table-column>
+        <el-table-column
+          v-if="loginStatus == '2'"
+          fixed="right"
+          label="操作"
+          width="50">
+          <template slot-scope="scope">
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData)"
+              type="text"
+              size="small">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -73,6 +87,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -137,6 +152,20 @@ export default {
   },
   created() {
     this.getDiseaseInfo()
+    const loginStatus = JSON.parse(sessionStorage.getItem('loginStatus'));
+    if (loginStatus !== null) {
+      this.$store.commit('user/login_status', loginStatus)
+    }
+  },
+  mounted() {
+    window.addEventListener('beforeunload', (e) => {
+      sessionStorage.setItem('loginStatus', JSON.stringify(this.$store.state.user.loginStatus))
+    })
+  },
+  computed: {
+    ...mapState({
+      loginStatus: (state) => state.user.loginStatus,
+    })
   },
   methods: {
     // 分页获取疾病数据
