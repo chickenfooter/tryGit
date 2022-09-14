@@ -233,7 +233,7 @@ export default {
 }
 ::v-deep .el-tabs__item {
   font-size: 16px;
-  color: white;
+  // color: white;
 }
 ::v-deep .el-tabs__item.is-active {
   color: #15cbf3;
