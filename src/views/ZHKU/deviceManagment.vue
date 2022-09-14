@@ -69,12 +69,12 @@ export default {
 </script>
 <style>
 .el-tabs__item:hover {
-  color: orange;
-  background-color: orange;
+  color: rgb(223, 223, 223);
+  background-color: rgb(210, 210, 210);
 }
 .el-tabs__item.is-active {
-  color: orange;
-  background-color: orange;
+  color: rgb(187, 187, 187);
+  background-color: rgb(209, 209, 209);
 }
 /* video-player{
    width: 100%;

@@ -79,6 +79,11 @@ export default {
             name: 'environmentalPrediction',
             label: '环境预测',
             icon: require('../../assets/img/environmentalPrediction.png'),
+          },{
+            path:'/environmentData',
+            name:'environmentData',
+            label:'图表数据',
+            icon: require('../../assets/img/environmentalPrediction.png'),
           }
         ]
       }

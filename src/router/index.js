@@ -12,6 +12,7 @@ import CitrusEncyclopedia from '../views/citrusEncyclopedia.vue'
 import DeviceManagment from '../views/ZHKU/deviceManagment.vue'
 // 导入环境预测
 import EnvironmentalPrediction from '../views/ZHKU/environmentalPrediction.vue'
+import environmentData from '../views/ZHKU/environmentData.vue'
 // 带入科学用药
 import ScientificMedication from '../views/scientificMedication.vue'
 
@@ -138,6 +139,10 @@ const routes = [
         path:'/environmentalPrediction',
         name:'environmentalPrediction',
         component:EnvironmentalPrediction
+      },{
+        path:'/environmentData',
+        name:'environmentData',
+        component:environmentData
       }
     ]
   },

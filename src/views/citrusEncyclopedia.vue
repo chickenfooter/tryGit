@@ -122,7 +122,7 @@ export default {
   color: rgb(255, 102, 0);
 }
 ::v-deep .el-tabs__item.is-active {
-  color: rgb(255, 102, 0);
+  color: rgb(255, 0, 0);
 }
 ::v-deep .el-icon-arrow-left {
   color: #000;
