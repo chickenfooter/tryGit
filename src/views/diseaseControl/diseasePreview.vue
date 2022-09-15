@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 修改功能暂未成功，先注释掉，之后修改没有问题之后再写回来 -->
     <el-card shadow="never" style="margin-bottom: 15px">
       <div class="search-card">
         <div class="search-input">
@@ -60,7 +59,7 @@
         </el-table-column>
         <el-table-column v-if="loginStatus == '2'" fixed="right" label="操作" width="90">
           <template slot-scope="scope">
-            <!-- <el-button @click.native.prevent="updateInfo(scope.row)" type="text" size="small" style="color: orange"> 编辑 </el-button> -->
+            <el-button @click.native.prevent="updateInfo(scope.row)" type="text" size="small" style="color: orange"> 编辑 </el-button>
             <el-button @click.native.prevent="deleteRow(scope.row)" type="text" size="small" style="color: red"> 删除 </el-button>
           </template>
         </el-table-column>
@@ -78,8 +77,8 @@
     </el-card>
     <!-- 新增表单 -->
     <el-dialog title="新增" :visible.sync="addDialogVisible" width="40%" :before-close="handleClose">
-      <el-form :model="addForm" label-position="top" :inline="true">
-        <el-form-item label="疾病名称（中文）" :label-width="formLabelWidth">
+      <el-form :model="addForm" label-position="top" :inline="true" :rules="rules">
+        <el-form-item label="疾病名称（中文）" :label-width="formLabelWidth" prop="diseaseChineseName">
           <el-input v-model="addForm.diseaseChineseName"></el-input>
         </el-form-item>
         <el-form-item label="疾病名称（英文）" :label-width="formLabelWidth">
@@ -88,24 +87,48 @@
         <el-form-item label="疾病名称（常用名）" :label-width="formLabelWidth">
           <el-input v-model="addForm.diseaseTrivialName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病类型" :label-width="formLabelWidth">
-          <el-select v-model="addForm.region" placeholder="请选择疾病类型">
-            <el-option label="虫害" value="虫害"></el-option>
-            <el-option label="病害" value="病害"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="病原物" :label-width="formLabelWidth">
           <el-input v-model="addForm.diseasePathogen" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病图片（仅支持链接）" :label-width="formLabelWidth">
+        <el-form-item label="疾病类型" :label-width="formLabelWidth" prop="disasterTypeId">
+          <el-select v-model="addForm.disasterTypeId" placeholder="请选择疾病类型">
+            <el-option label="虫害" value="1"></el-option>
+            <el-option label="病害" value="2"></el-option>
+            <el-option label="生理病害" value="3"></el-option>
+            <el-option label="草害" value="4"></el-option>
+            <el-option label="天敌" value="5"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="疾病发生部位" :label-width="formLabelWidth" prop="citrusPartId">
+          <el-select v-model="addForm.citrusPartId" placeholder="请选择疾病类型">
+            <el-option label="根" value="1"></el-option>
+            <el-option label="茎" value="2"></el-option>
+            <el-option label="叶" value="3"></el-option>
+            <el-option label="树干" value="4"></el-option>
+            <el-option label="枝" value="5"></el-option>
+            <el-option label="花" value="6"></el-option>
+            <el-option label="果" value="7"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="疾病主要分布情况（仅支持链接）" :label-width="formLabelWidth" prop="diseaseDistribution">
+          <el-input v-model="addForm.diseaseDistribution" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="疾病图片（仅支持链接）" :label-width="formLabelWidth" prop="diseasePictureUrl">
           <el-input v-model="addForm.diseasePictureUrl" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病简介" style="width: 500px">
+        <el-form-item label="疾病视频（仅支持链接）" :label-width="formLabelWidth">
+          <el-input v-model="addForm.diseaseVideo" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="疾病简介" style="width: 500px" prop="diseaseIntroduce">
           <el-input type="textarea" v-model="addForm.diseaseIntroduce" autocomplete="off"></el-input>
         </el-form-item>
         <br />
-        <el-form-item label="主要症状" style="width: 500px">
+        <el-form-item label="主要症状" style="width: 500px" prop="diseaseSymptom">
           <el-input type="textarea" v-model="addForm.diseaseSymptom" autocomplete="off"></el-input>
+        </el-form-item>
+        <br />
+        <el-form-item label="防控措施" style="width: 500px" prop="diseaseTreatment">
+          <el-input type="textarea" v-model="addForm.diseaseTreatment" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -114,9 +137,9 @@
       </span>
     </el-dialog>
     <!-- 编辑表单 -->
-    <el-dialog title="编辑" :visible.sync="updateDialogVisible" width="40%" :before-close="handleClose">
-      <el-form :model="updateFrom" label-position="top" :inline="true">
-        <el-form-item label="疾病名称（中文）" :label-width="formLabelWidth">
+    <el-dialog title="新增" :visible.sync="updateDialogVisible" width="40%" :before-close="handleClose">
+      <el-form :model="updateFrom" label-position="top" :inline="true" :rules="rules">
+        <el-form-item label="疾病名称（中文）" :label-width="formLabelWidth" prop="diseaseChineseName">
           <el-input v-model="updateFrom.diseaseChineseName"></el-input>
         </el-form-item>
         <el-form-item label="疾病名称（英文）" :label-width="formLabelWidth">
@@ -125,24 +148,48 @@
         <el-form-item label="疾病名称（常用名）" :label-width="formLabelWidth">
           <el-input v-model="updateFrom.diseaseTrivialName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病类型" :label-width="formLabelWidth">
-          <el-select v-model="updateFrom.region" placeholder="请选择疾病类型">
-            <el-option label="虫害" value="虫害"></el-option>
-            <el-option label="病害" value="病害"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="病原物" :label-width="formLabelWidth">
           <el-input v-model="updateFrom.diseasePathogen" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病图片（仅支持链接）" :label-width="formLabelWidth">
+        <el-form-item label="疾病类型" :label-width="formLabelWidth" prop="disasterTypeId">
+          <el-select v-model="updateFrom.disasterTypeId" placeholder="请选择疾病类型">
+            <el-option label="虫害" value="1"></el-option>
+            <el-option label="病害" value="2"></el-option>
+            <el-option label="生理病害" value="3"></el-option>
+            <el-option label="草害" value="4"></el-option>
+            <el-option label="天敌" value="5"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="疾病发生部位" :label-width="formLabelWidth" prop="citrusPartId">
+          <el-select v-model="updateFrom.citrusPartId" placeholder="请选择疾病类型">
+            <el-option label="根" value="1"></el-option>
+            <el-option label="茎" value="2"></el-option>
+            <el-option label="叶" value="3"></el-option>
+            <el-option label="树干" value="4"></el-option>
+            <el-option label="枝" value="5"></el-option>
+            <el-option label="花" value="6"></el-option>
+            <el-option label="果" value="7"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="疾病主要分布情况（仅支持链接）" :label-width="formLabelWidth" prop="diseaseDistribution">
+          <el-input v-model="updateFrom.diseaseDistribution" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="疾病图片（仅支持链接）" :label-width="formLabelWidth" prop="diseasePictureUrl">
           <el-input v-model="updateFrom.diseasePictureUrl" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="疾病简介" style="width: 500px">
+        <el-form-item label="疾病视频（仅支持链接）" :label-width="formLabelWidth">
+          <el-input v-model="updateFrom.diseaseVideo" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="疾病简介" style="width: 500px" prop="diseaseIntroduce">
           <el-input type="textarea" v-model="updateFrom.diseaseIntroduce" autocomplete="off"></el-input>
         </el-form-item>
         <br />
-        <el-form-item label="主要症状" style="width: 500px">
+        <el-form-item label="主要症状" style="width: 500px" prop="diseaseSymptom">
           <el-input type="textarea" v-model="updateFrom.diseaseSymptom" autocomplete="off"></el-input>
+        </el-form-item>
+        <br />
+        <el-form-item label="防控措施" style="width: 500px" prop="diseaseTreatment">
+          <el-input type="textarea" v-model="updateFrom.diseaseTreatment" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -232,6 +279,22 @@ export default {
         diseaseChineseName: '',
         diseaseDistribution: '',
         diseaseEnglishName: '',
+        diseaseIntroduce: '',
+        diseasePathogen: '',
+        diseasePictureUrl: '',
+        diseaseSymptom: '',
+        diseaseTreatment: '',
+        diseaseVideo: '',
+        diseaseTrivialName: '',
+      },
+      // 编辑数据
+      updateFrom: {
+        citrusPartId: '',
+        disasterTypeId: '',
+        diseaseChineseName: '',
+        diseaseDistribution: '',
+        diseaseEnglishName: '',
+        diseaseId: '',
         diseaseIntelligence: 0,
         diseaseIntroduce: '',
         diseasePathogen: '',
@@ -243,12 +306,21 @@ export default {
         diseaseWeight: 0,
         isDeleted: 0,
       },
-      // 编辑数据
-      updateFrom: {},
       updateDialogVisible: false,
       // 删除数据
       deleteDialogVisible: false,
       deleteInfo: {},
+      // 表单验证规则
+      rules: {
+        diseaseChineseName: [{ required: true, message: '请输入疾病名称', trigger: 'blur' }],
+        disasterTypeId: [{ required: true, message: '请选择疾病类别', trigger: 'change' }],
+        citrusPartId: [{ required: true, message: '请选择疾病发生部位', trigger: 'change' }],
+        diseaseIntroduce: [{ required: true, message: '请输入疾病简介', trigger: 'blur' }],
+        diseaseSymptom: [{ required: true, message: '请输入疾病症状', trigger: 'blur' }],
+        diseaseTreatment: [{ required: true, message: '请输入疾病防控措施', trigger: 'blur' }],
+        diseaseDistribution: [{ required: true, message: '请输入疾病主要发生区域', trigger: 'blur' }],
+        diseasePictureUrl: [{ required: true, message: '请输入疾病图片链接', trigger: 'blur' }],
+      },
     }
   },
   created() {
@@ -369,13 +441,22 @@ export default {
     // 编辑疾病信息
     async updateInfo(row) {
       const { data: res } = await this.$http.get(`/dev2/disease-information/showDiseaseInformation?diseaseId=${row.diseaseId}`)
-      this.updateFrom = res.data.showDiseaseInfoVO
+      this.updateFrom.diseaseChineseName = res.data.showDiseaseInfoVO.diseaseChineseName
+      this.updateFrom.diseaseIntroduce = res.data.showDiseaseInfoVO.diseaseIntroduce
+      this.updateFrom.diseaseSymptom = res.data.showDiseaseInfoVO.diseaseSymptom
+      this.updateFrom.diseaseDistribution = res.data.showDiseaseInfoVO.diseaseDistribution
+      this.updateFrom.diseaseEnglishName = res.data.showDiseaseInfoVO.diseaseEnglishName
+      this.updateFrom.diseasePathogen = res.data.showDiseaseInfoVO.diseasePathogen
+      this.updateFrom.diseasePictureUrl = res.data.showDiseaseInfoVO.diseasePictureUrl
+      this.updateFrom.diseaseTreatment = res.data.showDiseaseInfoVO.diseaseTreatment
+      this.updateFrom.diseaseTrivialName = res.data.showDiseaseInfoVO.diseaseTrivialName
+      this.updateFrom.diseaseVideo = res.data.showDiseaseInfoVO.diseaseVideo
       this.updateFrom.diseaseId = row.diseaseId
       this.updateDialogVisible = true
-      console.log('编辑', row)
+      console.log('编辑', row, this.updateFrom)
     },
     async confirmUpdate() {
-      const { data: res } = await this.$http.post(`/dev2/disease-information/update`, this.updateFrom)
+      const { data: res } = await this.$http.put(`/dev2/disease-information/update`, this.updateFrom)
       if (res.code === 0) {
         this.updateDialogVisible = false
         this.getDiseaseInfo()
@@ -416,7 +497,7 @@ export default {
       if (this.loading) {
         return
       }
-      this.$confirm('确定要提交表单吗？')
+      this.$confirm('确定要关闭表单？')
         .then((_) => {
           this.loading = true
           this.timer = setTimeout(() => {
